@@ -35,12 +35,14 @@
             <span class="filter-label">Jornal</span>
             <select class="form-control whitey-sel" name="">
               <option>Todos</option>
+              <option ng-repeat="newspaper in newspapers" value="{{newspaper.id}}">{{newspaper.name}}</option>
             </select>
           </div>
           <div class="filter-box">
             <span class="filter-label">Anunciante</span>
             <select class="form-control whitey-sel" name="">
               <option>Todos</option>
+              <option ng-repeat="adv in advertisers" value="{{adv.id}}">{{adv.name}}</option>
             </select>
           </div>
       </div>
@@ -49,8 +51,8 @@
       <div class="row whitey">
         <div class="filter-box" style="padding: 10px">
           <span class="filter-label">total<br>mensal</span>
-          <span style="background-color: #e1faed; margin-left: 5px; padding: 8px 5px; position: relative; top: -8px;">
-            R$<input type="text" value="2.0000.0000,00" style="background: none; border: none; text-align: right" readonly="readonly">
+          <span  class="prices">
+            R$<input type="text" value="{{ totalMonthly | currency:'' }}" readonly="readonly">
           </span>
         </div>
       </div>
@@ -60,23 +62,27 @@
 
 <div class="container infos-purchase">
   <div>
-    Informações acumuladas até o dia 10/08 <button class="btn btn-info"><i class="ficon ficon-file-pdf"></i></button>
+    Informações acumuladas até o dia {{ infoDate }} <button class="btn btn-info"><i class="ficon ficon-file-pdf"></i></button>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default" ng-repeat="result in purchaseData">
     <div class="panel-body" ng-click="isCollapsed = !isCollapsed">
       <div class="row line-info-purchase">
         <div class="col-md-6 description">
           <i class="ficon" ng-class="{ 'ficon-plus-circled': isCollapsed, 'ficon-minus-circled': !isCollapsed }"></i>
-          <strong>1253 | Proposta | 14/12/2014</strong>
+          <strong>{{ result.id }} | {{ result.name }} | {{ result.date }}</strong>
         </div>
-        <div class="col-md-4 adv-name">anunciante <strong>Lalala</strong></div>
-        <div class="col-md-2 value"><span style="background-color: #f2f2f2;">R$ <span>50.000,00</span></span></div>
+        <div class="col-md-4 adv-name">anunciante <strong>{{ result.advertiser }}</strong></div>
+        <div class="col-md-2 value">
+          <span class="prices">
+            R$<input type="text" value="{{ result.price | currency:'' }}" readonly="readonly">
+          </span>
+        </div>
       </div>
       <div class="detail-purchase" collapse="isCollapsed">
-        <div class="by-newspape">
+        <div class="by-newspape" ng-repeat="newspaper in result.newspapers">
           <div>
-            <i class="ficon ficon-doc-1"></i> Estado de São Paulo
+            <i class="ficon ficon-doc-1"></i> {{ newspaper.name }}
           </div>
           <table>
             <thead>
@@ -90,56 +96,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="by-newspape">
-          <div>
-            <i class="ficon ficon-doc-1"></i> Estado de São Paulo 2
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <td>caderno</td>
-                <td>formato</td>
-                <td>determinação</td>
-                <td>data de publicação</td>
-                <td>dia da semana</td>
-                <td>valor</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
+              <tr ng-repeat="item in newspaper.items">
+                <td>{{ item.category }}</td>
+                <td>{{ item.format }}</td>
+                <td>{{ item.determination }}</td>
+                <td>{{ item.date }}</td>
+                <td><span ng-repeat="day in item.weekdays">{{ day }}</span></td>
+                <td>{{ item.price | currency:'' }}</td>
               </tr>
             </tbody>
           </table>
@@ -147,91 +110,4 @@
       </div>
     </div>
   </div>
-
-
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="row line-info-purchase">
-        <div class="col-md-6 description">
-          <i class="ficon ficon-minus-circled"></i>
-          <strong>1253 | Proposta | 14/12/2014</strong>
-        </div>
-        <div class="col-md-4 adv-name">anunciante <strong>Lalala</strong></div>
-        <div class="col-md-2 value"><strong>R$ <span>50.000,00</span></strong></div>
-      </div>
-      <div class="detail-purchase">
-        <div class="by-newspape">
-          <div>
-            <i class="ficon ficon-doc-1"></i> Estado de São Paulo
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <td>caderno</td>
-                <td>formato</td>
-                <td>determinação</td>
-                <td>data de publicação</td>
-                <td>dia da semana</td>
-                <td>valor</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="by-newspape">
-          <div>
-            <i class="ficon ficon-doc-1"></i> Estado de São Paulo 2
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <td>caderno</td>
-                <td>formato</td>
-                <td>determinação</td>
-                <td>data de publicação</td>
-                <td>dia da semana</td>
-                <td>valor</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-              <tr>
-                <td>Esportes</td>
-                <td>Meia página</td>
-                <td>Capa</td>
-                <td>22/11/2014</td>
-                <td>segunda</td>
-                <td>R$ 20.000,00</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </div>
