@@ -10,7 +10,7 @@ use Zend\I18n\Filter\NumberFormat;
  */
 class Item
 {
-    public function fetchAll()
+    public function fetchAll( array $params )
     {
         $return = [];
         $color[] = 'PB';
@@ -41,7 +41,7 @@ class Item
             $deal['column'] = $column[rand(0,1)];
             $deal['format'] = $format[rand(0,2)];
             $deal['determination'] =$determination[rand(0,3)];
-            $deal['name'] = $newspaper[rand(0,2)];
+            $deal['newspaper'] = $newspaper[rand(0,2)];
             $deal['weekDay'] = $weekDays[rand(0,2)];
             $deal['image'] = 'http://cdni.wired.co.uk/1920x1280/o_r/Pug.jpg';
 

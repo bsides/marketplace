@@ -13,20 +13,22 @@ use Zend\View\Model\JsonModel;
 use Direct\Model;
 
 /**
- * Class ListController
+ * Class UltimasComprasController
  *
  * @package Direct\Controller
  */
-class ItemController extends AbstractActionController
+class UltimasComprasController extends AbstractActionController
 {
     /**
      * @return array|JsonModel
      */
     public function indexAction()
     {
-        $service = $this->getServiceLocator()->get('direct.newspaper.item');
-        $params = $this->getRequest()->getQuery()->toArray();
-        return new JsonModel($service->find($params)['data']);
+        //retornando os itens do carrinho
+        //quando o sdk tiver pronto retirar isso
+        $post = $this->getRequest()->getPost()->toArray();
+        $itemGateway = new Model\Item();
+        return new JsonModel( $itemGateway->fetchAll( $post ) );
     }
 
 }

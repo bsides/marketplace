@@ -2,27 +2,36 @@
     "name": "zendframework/skeleton-application",
     "description": "Skeleton Application for ZF2",
     "license": "BSD-3-Clause",
+    "config" : {
+        "process-timeout": 30
+    },
     "keywords": [
         "framework",
         "zf2"
     ],
     "homepage": "http://framework.zend.com/",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.*",
         "predicta/cas-api-sdk-php": "dev-master",
+        "predicta/direct-api-sdk-php": "dev-master",
         "doctrine/common": ">=2.1"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
+        "zendframework/zend-developer-tools": "dev-master",
         "phpmd/phpmd" : "@stable",
-        "squizlabs/php_codesniffer": "dev-master",
-        "zendframework/zend-developer-tools": "dev-master"
+        "squizlabs/php_codesniffer": "dev-master"
     },
     "repositories": {
         "predicta/cas-api-sdk-php": {
             "type": "vcs",
             "url": "git@gitlab.corp.predicta.com.br:infra/cas_api_sdk_php.git"
+        },
+        "predicta/direct-api-sdk-php": {
+            "type": "vcs",
+            "url": "git@gitlab.corp.predicta.com.br:infra/direct_api_sdk_php.git"
         }
     }
 }
