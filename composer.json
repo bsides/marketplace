@@ -8,11 +8,14 @@
     ],
     "homepage": "http://framework.zend.com/",
     "minimum-stability": "dev",
+    "config": {
+        "process-timeout": 30
+    },
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.*",
         "predicta/cas-api-sdk-php": "dev-master",
-        "predicta/direct-api-sdk-php": "dev-master",
+        "predicta/direct-api-sdk-php": "0.1.*",
         "doctrine/common": ">=2.1"
     },
     "require-dev": {
