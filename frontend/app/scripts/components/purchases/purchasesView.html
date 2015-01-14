@@ -28,21 +28,22 @@
               <option>Dezembro</option>
             </select>
              <select class="form-control whitey-sel" name="">
-              <option>2014</option>
+              <option value="2014">2014</option>
+              <option value="2015">2015</option>
             </select>
           </div>
           <div class="filter-box">
             <span class="filter-label">Jornal</span>
             <select class="form-control whitey-sel" name="">
               <option>Todos</option>
-              <option ng-repeat="newspaper in newspapers" value="{{newspaper.id}}">{{newspaper.name}}</option>
+              <option ng-repeat="newspaper in newspapers | orderBy:'name'" value="{{newspaper.id}}">{{newspaper.name}}</option>
             </select>
           </div>
           <div class="filter-box">
             <span class="filter-label">Anunciante</span>
             <select class="form-control whitey-sel" name="">
               <option>Todos</option>
-              <option ng-repeat="adv in advertisers" value="{{adv.id}}">{{adv.name}}</option>
+              <option ng-repeat="adv in advertisers | orderBy:'name'" value="{{adv.id}}">{{adv.name}}</option>
             </select>
           </div>
       </div>
@@ -65,7 +66,7 @@
     Informações acumuladas até o dia {{ infoDate }} <button class="btn btn-info"><i class="ficon ficon-file-pdf"></i></button>
   </div>
 
-  <div class="panel panel-default" ng-repeat="result in purchaseData">
+  <div class="panel panel-default" ng-repeat="result in purchaseData | orderBy:'id'">
     <div class="panel-body" ng-click="isCollapsed = !isCollapsed">
       <div class="row line-info-purchase">
         <div class="col-md-6 description">
@@ -80,7 +81,7 @@
         </div>
       </div>
       <div class="detail-purchase" collapse="isCollapsed">
-        <div class="by-newspape" ng-repeat="newspaper in result.newspapers">
+        <div class="by-newspape" ng-repeat="newspaper in result.newspapers | orderBy:'name'">
           <div>
             <i class="ficon ficon-doc-1"></i> {{ newspaper.name }}
           </div>
