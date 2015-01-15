@@ -1,5 +1,25 @@
 'use strict'
 
+app.filter 'filterNewspaper', ->
+  (items, newspaperId) ->
+    return items if (typeof newspaperId is 'undefined') or (newspaperId is '')
+    filtered = []
+    angular.forEach items, (item, key) ->
+      filtered.push item if parseInt(item.id) is parseInt(newspaperId)
+      return
+
+    filtered
+
+app.filter 'filterAdvertiser', ->
+  (items, advertiserId) ->
+    return items if(typeof advertiserId is 'undefined') or (advertiserId is '')
+    filtered = []
+    angular.forEach items, (item, key) ->
+      filtered.push item if parseInt(item.advertiserId) is parseInt(advertiserId)
+      return
+
+    filtered
+
 app.controller 'PurchasesCtrl', ($scope) ->
 
   $scope.advertisers =  [
@@ -20,7 +40,7 @@ app.controller 'PurchasesCtrl', ($scope) ->
   $scope.newspapers =  [
     {
       name: 'O Globo'
-      id: 1
+      id: 9
     }
     {
       name: 'Estadão'
@@ -28,7 +48,7 @@ app.controller 'PurchasesCtrl', ($scope) ->
     }
     {
       name: 'Estado de São Paulo'
-      id: 3
+      id: 7
     }
     {
       name: 'Folha de São Paulo'
@@ -44,7 +64,8 @@ app.controller 'PurchasesCtrl', ($scope) ->
     {
       id: 231
       name: 'Proposta 1'
-      date: '14/12/2014'
+      date: '14/12/2015'
+      advertiserId: 3
       advertiser: 'Adv'
       price: 32012.00
       newspapers : [
@@ -76,6 +97,7 @@ app.controller 'PurchasesCtrl', ($scope) ->
       id: 153
       name: 'Proposta 2'
       date: '14/12/2014'
+      advertiserId: 3
       advertiser: 'Adv'
       price: 52012.00
       newspapers : [
