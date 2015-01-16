@@ -81,7 +81,7 @@
                 <div class="section">
                   <table ng-attr-id="bid-{{ result.id }}">
                     <tr class="top">
-                      <td rowspan="3" colspan="3" class="week-day">
+                      <td rowspan="3" colspan="1" class="week-day">
                         <a href="#">
                           <div class="week mon">{{ result.week_day.code }}</div>
                         </a>
@@ -94,28 +94,42 @@
                       </td>
                     </tr>
                     <tr class="info">
-                      <td>formato</td>
-                      <td colspan="2"><strong>{{ result.format.description }}</strong></td>
+                      <td class="format">formato</td>
+                      <td colspan="4" class="format-description" title="{{ result.format.description }}">
+                        <div class="abbreviation"> {{ result.format.description }} </div>
+                      </td>
                     </tr>
                     <tr class="info">
                       <td>caderno</td>
-                      <td colspan="2"> <strong ng-repeat="caderno in result.category">{{ caderno.description }}</strong></td>
+                      <td colspan="4" class="category-description" title="{{ joinArray(result.category) }}">
+                        <div class="abbreviation"> {{ joinArray(result.category) }} </div>
+                      </td>
                     </tr>
                     <tr>
-                      <td colspan="3" ng-if="result.color.code == 'CROMIA'">
+                      <td colspan="1" ng-if="result.color.code == 'CROMIA'">
                         <div class="polychrome cyan"></div>
                         <div class="polychrome yellow"></div>
                         <div class="polychrome magenta"></div>
                       </td>
-                      <td colspan="3" ng-if="result.color.code == 'PB'">
+                      <td colspan="1" ng-if="result.color.code == 'PB'">
                         <div class="polychrome black"></div>
                         <div class="polychrome white"></div>
                       </td>
                       <td colspan="3" class="reg"><i class="ficon ficon-location"></i> <span>ver regiões</span></td>
                       <td colspan="2"></td>
                     </tr>
+                    <!-- <tr>
+                      <td colspan="4">
+                        <div class="text-right full-price">R$ <span class="price">{{ result.bid.value | currency:'' }}</span></div>
+                      </td>
+                      <td colspan="2" class="text-right">
+                        <button type="button" class="btn btn-primary" ng-click="addToCart(result)" ng-disabled="isAddedToCart[result.id]"><span ng-show="!isAddingToCart[result.id] && !isAddedToCart[result.id]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.id] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.id] }"></i></button>
+                      </td>
+                    </tr> -->
+                  </table>
+                  <table class="add-cart">
                     <tr>
-                      <td colspan="6">
+                      <td colspan="4">
                         <div class="text-right full-price">R$ <span class="price">{{ result.bid.value | currency:'' }}</span></div>
                       </td>
                       <td colspan="2" class="text-right">

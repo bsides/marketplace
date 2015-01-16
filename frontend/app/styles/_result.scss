@@ -45,20 +45,25 @@
   .panel-body{
 
     // Legibilidade >>>>> Código.
+    table.add-cart{
+      width: auto;
+    }
     table {
       margin: 0;
+      float: left;
+      width: 70%;
     }
     tr {
-      width: 25%;
+      width: 30%;
     }
     tr + tr {
-      width: 15%;
+      width: 17%;
     }
     tr + tr + tr {
-      width: 15%;
+      width: 30%;
     }
     tr + tr + tr + tr {
-      width: 17%;
+      width: 23%;
       margin-top: 20px;
     }
     tr + tr + tr + tr + tr {
@@ -92,6 +97,19 @@
             top: 5px;
             left: 25px;
           }
+        }
+      }
+      &.week-day {
+        width: auto;
+      }
+      &.format {
+        width: auto;
+      }
+      &.format-description {
+         width: 80px;
+
+        .abbreviation {
+          width: 80px;
         }
       }
     }
@@ -157,7 +175,7 @@
       padding-left: 15px;
     }
     &.week-day {
-      width: 60px;
+      width: 90px;
       vertical-align: top;
     }
     &.added {
@@ -194,6 +212,19 @@
       font-weight: bold;
       margin-bottom: 20px;
     }
+    &.format {
+      width: 55px;
+    }
+    &.format-description {
+      width: 200px;
+    }
+  }
+  .abbreviation {
+    width: 200px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    font-weight: bold;
+    white-space: nowrap;
   }
   .reg {
     line-height: 50px;

@@ -95,3 +95,11 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $http, $log, Results) ->
   #   console.log item
 
 
+  $scope.joinArray = (arrObj) ->
+    description = []
+    angular.forEach arrObj, (item,key) ->
+      description.push(item.description)
+
+    description.join(" ")
+
+
