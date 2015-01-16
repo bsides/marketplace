@@ -11,11 +11,6 @@ class Item
     /**
      * @type string
      */
-    public $comment;
-
-    /**
-     * @type string
-     */
     public $features;
 
     /**

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d46f42160bb4749c9af16c4e93907e2e",
+    "hash": "4e48d92340f31293900bd28dfe810d0a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -670,7 +670,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.corp.predicta.com.br:infra/direct_api_sdk_php.git",
-                "reference": "3aa95e6d5762a22159896ed02d17ad994e6ca41c"
+                "reference": "58b0b79fd7dcc4e1fd2766ee79ee29a2a4141c27"
             },
             "require": {
                 "guilhermewop/apigility-client": "v0.1.0",
@@ -706,7 +706,7 @@
                 "zend framework 2",
                 "zend module"
             ],
-            "time": "2015-01-13 22:33:43"
+            "time": "2015-01-15 21:20:29"
         },
         {
             "name": "zendframework/zendframework",
@@ -955,12 +955,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "85267e2b891f541eee6c2330f9cf1cdcb5322176"
+                "reference": "65c8d2da98c1c86bfb5589a0f9264c043dde93ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/85267e2b891f541eee6c2330f9cf1cdcb5322176",
-                "reference": "85267e2b891f541eee6c2330f9cf1cdcb5322176",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/65c8d2da98c1c86bfb5589a0f9264c043dde93ab",
+                "reference": "65c8d2da98c1c86bfb5589a0f9264c043dde93ab",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1015,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-01-14 03:56:43"
+            "time": "2015-01-16 05:00:42"
         },
         {
             "name": "symfony/config",

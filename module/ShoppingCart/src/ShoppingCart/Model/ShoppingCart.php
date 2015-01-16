@@ -64,13 +64,6 @@ class ShoppingCart
      */
     public function addItem( Item $item )
     {
-        if (0 > count($item->ads)) {
-            return FALSE;
-        }
-        if (0 == count($item->ads)) {
-            $this->removeItem( $item );
-            return FALSE;
-        }
         $this->items[$item->hash] = $item;
         $this->persist();
         return $item;

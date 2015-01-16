@@ -18,9 +18,9 @@ return [
                 ],
             ],
             'cart-add' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/cart/add',
+                    'route'    => '/cart/add[/:hash]',
                     'defaults' => [
                         '__NAMESPACE__' => 'ShoppingCart\Controller',
                         'controller'    => 'Index',
