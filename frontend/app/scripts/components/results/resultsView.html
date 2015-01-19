@@ -125,7 +125,7 @@
                         <div class="text-right full-price">R$ <span class="price">{{ result.bid.value | currency:'' }}</span></div>
                       </td>
                       <td colspan="2" class="text-right">
-                        <button type="button" class="btn btn-primary" ng-click="addToCart(result)" ng-disabled="isAddedToCart[result.id]"><span ng-show="!isAddingToCart[result.id] && !isAddedToCart[result.id]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.id] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.id] }"></i></button>
+                        <button type="button" class="btn btn-success" ng-click="addToCart(result)" ng-disabled="isAddedToCart[result.id]"><span ng-show="!isAddingToCart[result.id] && !isAddedToCart[result.id]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.id] }">adicionado</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.id] }"></i></button>
                       </td>
                     </tr>
                   </table>

@@ -79,7 +79,7 @@
             <div class="comment" ng-show="isCommenting[item.id]">
               <form action="">
                 <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                <button type="button" class="btn btn-default" ng-click="toggleComment(item.id)">cancelar</button>
+                <button type="button" class="btn btn-info" ng-click="toggleComment(item.id)">cancelar</button>
                 <button type="button" class="btn btn-primary" ng-click="saveComment(item.id)">salvar</button>
               </form>
             </div>
@@ -167,10 +167,10 @@
   </div>
 
   <div class="actions">
-    <button type="button" class="btn btn-default" aria-expanded="false" ng-click="goSearch()">
+    <button type="button" class="btn btn-info" aria-expanded="false" ng-click="goSearch()">
       cancelar
     </button>
-    <button type="button" class="btn btn-primary" aria-expanded="false" ng-click="goSearch()">
+    <button type="button" class="btn btn-success" aria-expanded="false" ng-click="goSearch()">
       enviar proposta
     </button>
   </div>

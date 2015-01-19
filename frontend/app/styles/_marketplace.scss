@@ -11,6 +11,7 @@ $main-border:       #E7E9E3;
 $light-gray:        #666;
 $text-color:        #444;
 $white:             #fff;
+/* $                    #4e5253; */
 
 $brand-primary:         $main-color;
 $brand-success:         $action-color;
@@ -59,6 +60,10 @@ $navbar-default-link-active-bg:            $navbar-active-bg;
 //## For each of Bootstrap's buttons, define text, background and border color.
 $btn-info-color:                 $brand-primary;
 $btn-info-bg:                    $brand-info;
+$btn-info-border:                transparent;
+
+$btn-info-color:                 #ffffff;
+$btn-info-bg:                    #4e5253;
 $btn-info-border:                transparent;
 
 
