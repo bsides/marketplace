@@ -1,6 +1,8 @@
 <?php
 namespace Direct\Model;
 
+use Exception;
+
 /**
  * Class Deal
  *
@@ -15,6 +17,6 @@ class Deal
      */
     public function save($params)
     {
-        return true;
+        throw new Exception();
     }
 }
