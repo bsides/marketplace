@@ -148,7 +148,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
 
   $scope.sendCart = ->
     # Primeiro alteramos o carrinho com novos ads
-    Results.changeCart($scope.getCartData).success((data) ->
+    Results.updateCart($scope.getCartData).success((data) ->
       $log.info 'Alterou carrinho com sucesso. Agora vamos enviar a proposta.'
       # E no seu sucesso enviamos a proposta. Esse é somente um GET.
       Results.sendBid($scope.getCartData).success((data) ->

@@ -27,9 +27,13 @@ class Module
         $moduleRouteListener->attach($em);
         $authService = $sm->get('auth.service');
 <<<<<<< HEAD
+<<<<<<< HEAD
         $this->restrictLogin($e, $authService, array('login'), 'login');
 =======
         //$this->restrictLogin($e, $authService, array('login'), 'login');
+>>>>>>> rafael/cart-develop
+=======
+        $this->restrictLogin($e, $authService, array('login'), 'login');
 >>>>>>> rafael/cart-develop
     }
 
