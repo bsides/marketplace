@@ -9,7 +9,7 @@ app.factory 'Results', ($http) ->
     search: '/direct/item'
     list: '/direct/list'
     empty: '/cart/empty'
-    sendCart: '/direct/deal/send'
+    sendBid: '/direct/deal/send'
     updateCart: '/cart/update'
 
   cartTotal: (price) ->
@@ -36,7 +36,7 @@ app.factory 'Results', ($http) ->
   list: (theFilter) ->
     $http.get(url.list + theFilter)
 
-  sendCart: (array) ->
+  sendBid: (array) ->
     $http.get(url.sendCart)
 
   updateCart: (array) ->
