@@ -363,6 +363,23 @@ module.exports = (grunt) ->
           assetCacheBuster: false
           raw: 'Sass::Script::Number.precision = 10\n'
 
+      build:
+        options:
+          debugInfo: true
+          sassDir: '<%= yeoman.app %>/styles'
+          cssDir: '<%= yeoman.public %>/styles'
+          generatedImagesDir: '.tmp/images/generated'
+          imagesDir: '<%= yeoman.public %>/images'
+          javascriptsDir: '<%= yeoman.public %>/scripts'
+          fontsDir: '<%= yeoman.public %>/styles/fonts'
+          importPath: './bower_components'
+          httpImagesPath: '/images'
+          httpGeneratedImagesPath: '/images/generated'
+          httpFontsPath: '/styles/fonts'
+          relativeAssets: false
+          assetCacheBuster: false
+          raw: 'Sass::Script::Number.precision = 10\n'
+
 
     # Renames files for browser caching purposes
     filerev:
@@ -679,14 +696,14 @@ module.exports = (grunt) ->
         'compass'
       ]
       dist: [
-        'coffee'
-        'compass:dist'
+        'coffee:dev'
+        'compass:build'
         'imagemin'
         'svgmin'
       ]
       build: [
-        'coffee:dist'
-        'compass:dist'
+        'coffee:dev'
+        'compass:build'
         'imagemin'
         'svgmin'
       ]
