@@ -204,11 +204,10 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   # Abre o modal em first load
   $timeout (->
     # Somente se ele já não estiver aberto!!!
-    $log.info 'vamos abrir a busca'
     if typeof $modalStack.getTop() is 'undefined'
       $scope.newSearch()
       return
-  ), 3000
+  ), 6000
 
   # Ações do carrinho
 

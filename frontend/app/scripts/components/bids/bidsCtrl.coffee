@@ -36,8 +36,8 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
           if newValue.ads is null
             newValue.ads = [
               comment: ''
-              date: $filter('date') new Date(), 'dd-MMM-yyyy'
-              price: newValue.features.bid.value
+              date: $filter('date') new Date(), 'dd-MM-yyyy'
+              price: parseFloat(newValue.features.bid.value).toFixed(2)
             ]
             newValue.quantity = 1
 
@@ -98,7 +98,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
     format: 'dd-MM-yyyy'
     onClose: (e) ->
 
-  $scope.dateFormats = ['dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
+  $scope.dateFormats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
   $scope.dateFormat = $scope.dateFormats[0]
 
   # Transform into array for ng-repeat
@@ -132,8 +132,8 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
     if obj.quantity < 10
       obj.ads.push(
         comment: ''
-        date: $filter('date') new Date(), 'dd-MMM-yyyy'
-        price: obj.features.bid.value
+        date: $filter('date') new Date(), 'dd-MM-yyyy'
+        price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
 

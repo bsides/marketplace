@@ -201,6 +201,14 @@ module.exports = (grunt) ->
           dest: '<%= yeoman.public %>/styles/'
         ]
 
+      build:
+        files: [
+          expand: true
+          cwd: '<%= yeoman.public %>/styles/'
+          src: '{,*/}*.css'
+          dest: '<%= yeoman.public %>/styles/'
+        ]
+
 
     # Automatically inject Bower components into the app
     wiredep:
@@ -793,15 +801,18 @@ module.exports = (grunt) ->
     grunt.log.subhead 'OBS - Essa tarefa apaga os diretórios de destino antes de compilar os arquivos'
     try
       grunt.task.run [
-        'clean:dist'
+        'clean:public'
+        'clean:layout'
+        'clean:index'
         'html2js:bootstrap'
         'html2js:marketplace'
+        'html2js:multiselect'
         'wiredep'
         'useminPrepare'
         'concurrent:dist'
-        'autoprefixer:dist'
+        'autoprefixer:build'
         'concat'
-        'ngAnnotate'
+        # 'ngAnnotate'
         'copy:dist'
         #'cdnify'
         'cssmin'

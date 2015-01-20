@@ -10,7 +10,7 @@ app.factory 'Results', ($http) ->
     list: '/direct/list'
     empty: '/cart/empty'
     sendCart: '/direct/deal/send'
-    changeCart: '/cart/update'
+    updateCart: '/cart/update'
 
   cartTotal: (price) ->
     price = price + price
@@ -39,7 +39,7 @@ app.factory 'Results', ($http) ->
   sendCart: (array) ->
     $http.get(url.sendCart)
 
-  changeCart: (array) ->
+  updateCart: (array) ->
     $http(
       method: 'POST'
       url: url.changeCart
