@@ -42,6 +42,6 @@ app.factory 'Results', ($http) ->
   updateCart: (array) ->
     $http(
       method: 'POST'
-      url: url.changeCart
+      url: url.updateCart
       data: array
     )

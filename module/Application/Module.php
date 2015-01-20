@@ -26,7 +26,7 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($em);
         $authService = $sm->get('auth.service');
-        //$this->restrictLogin($e, $authService, array('login'), 'login');
+        $this->restrictLogin($e, $authService, array('login'), 'login');
     }
 
     public function getConfig()
