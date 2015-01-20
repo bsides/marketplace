@@ -1,4 +1,4 @@
-<div ng-if="!getCartData.error">
+<div ng-hide="getCartData.error || getCartData.sent">
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -173,7 +173,7 @@
 
   </div>
 </div>
-<div ng-if="getCartData.error">
+<div ng-show="getCartData.error">
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -184,8 +184,32 @@
           <span class="cart-icon">
             <i class="ficon ficon-basket"></i>
           </span>
-          <span class="cart-quantity">
-            <span>0</span>
+          <span class="cart-total">
+            <span class="price-label">R$</span>
+            <span class="price-value">{{ cartTotal | currency:"" }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <alert type="{{ getCartData.type }}" alert-dismissable="false">{{ getCartData.message }}</alert>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="getCartData.sent">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Carrinho | Proposta</h2>
+      </div>
+      <div class="col-md-4">
+        <div class="cart-button disabled">
+          <span class="cart-icon">
+            <i class="ficon ficon-basket"></i>
           </span>
           <span class="cart-total">
             <span class="price-label">R$</span>

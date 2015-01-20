@@ -15,25 +15,14 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
   # Carrega os resultados ou retorna erro caso não der
   handleAllResults = (data, status) ->
     if status == 200 and Object.keys(data).length > 0
+
       # angular.forEach data, (value, key) ->
       #   value.itemsfront = []
       #   angular.forEach value.items, (val, k) ->
       #     value.itemsfront.push(val)
 
-      #   value.publisher = value.features.publisher.id
-
-      # localStorageService.set('localCartData', data)
-      # localValue = localStorageService.get('localCartData')
-      # if angular.equals(data, localValue)
-      #   $scope.getCartData = localValue
-      # else
-      #   localStorageService.remove('localCartData')
-      #   localValue = {}
-      localStorageService.remove('localCartData')
-      $scope.getCartData = data
-
       # Precisamos que data.ads seja um array desde já, mesmo se vazio
-      angular.forEach $scope.getCartData, (value, keys) ->
+      angular.forEach data, (value, keys) ->
         angular.forEach value.items, (newValue, newKeys) ->
           if newValue.ads is null
             newValue.ads = [
@@ -44,6 +33,15 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
             newValue.quantity = 1
           else
             newValue.quantity = newValue.ads.length
+
+      localStorageService.set('localCartData', data)
+      localValue = localStorageService.get('localCartData')
+      if angular.equals(data, localValue)
+        $scope.getCartData = localValue
+      else
+        localStorageService.remove('localCartData')
+        localValue = {}
+        $scope.getCartData = data
 
     else if Object.keys(data).length == 0
       $scope.getCartData =
@@ -140,6 +138,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
         price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
+    Results.updateCart($scope.getCartData).success(->)
 
   $scope.delQty = (obj, index) ->
     if obj.quantity > 1
@@ -149,20 +148,20 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
         obj.ads.splice(index, 1)
 
       obj.quantity = obj.quantity - 1
+    Results.updateCart($scope.getCartData).success(->)
 
   $scope.sendCart = ->
     # Primeiro alteramos o carrinho com novos ads
     Results.updateCart($scope.getCartData).success((data) ->
-      $log.info 'Alterou carrinho com sucesso. Agora vamos enviar a proposta.'
       # E no seu sucesso enviamos a proposta. Esse é somente um GET.
       Results.sendBid($scope.getCartData).success((data) ->
-        $log.info 'Enviou a proposta com sucesso.'
-        $log.info data
+        $scope.getCartData =
+          status: 200
+          message: 'Sua proposta foi enviada. Obrigado!'
+          sent: true
+          type: 'success'
       )
     )
-
-  $scope.$watch 'item.ads.length', (newValue, oldValue) ->
-    $log.info newValue
 
   # Data coming from server
   # $scope.bidData = [

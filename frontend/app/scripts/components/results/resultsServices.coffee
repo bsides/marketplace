@@ -37,7 +37,7 @@ app.factory 'Results', ($http) ->
     $http.get(url.list + theFilter)
 
   sendBid: (array) ->
-    $http.get(url.sendBid)
+    $http.post(url.sendBid)
 
   updateCart: (array) ->
     $http(
