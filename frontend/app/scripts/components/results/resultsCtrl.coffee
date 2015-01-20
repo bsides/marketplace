@@ -1,23 +1,8 @@
 'use strict'
 
-app.controller 'ResultsCtrl', ($scope, $rootScope, $filter, $http, Results) ->
+app.controller 'ResultsCtrl', ($scope, $rootScope, $http, $log, Results) ->
 # rows with ng-repeat
 # http://angularjs4u.com/filters/angularjs-template-divs-row/
-
-  # Try to get results
-  $scope.searchData = []
-
-  handleAllResults = (data, status) ->
-    if status == 200
-      $scope.searchData = data
-    else
-      $scope.searchData = 'Erro ao retornar os dados'
-
-  # Deal with them
-  Results.get().success(handleAllResults)
-
-  # Counter
-  $scope.countResults = $scope.searchData.length
 
   # Formatador de resultado
   $scope.formatResults = (counter) ->
@@ -26,7 +11,15 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $filter, $http, Results) ->
     else if counter == 1
       $scope.resultLabel = counter + ' resultado'
     else
-      $scope.resultLabel = 'Sua busca não retornou resultados'
+      $scope.resultLabel = ''
+
+  # Put results in local variable
+  if typeof $rootScope.searchData is 'undefined'
+    $scope.searchData = []
+    $scope.countResults = 0
+  else
+    $scope.countResults = $rootScope.searchData.length
+    $scope.searchData = $rootScope.searchData
 
   # Ordenação de resultado
 
@@ -74,9 +67,9 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $filter, $http, Results) ->
       $scope.isAddedToCart[bid.id] = true
       $scope.isAddingToCart[bid.id] = false
       # 4 - acrescenta quantidade e atualiza valor ao carrinho
-      $rootScope.cartTotal = parseFloat($rootScope.cartTotal) + parseFloat(bid.price)
+      $rootScope.cartTotal = parseFloat($rootScope.cartTotal) + parseFloat(bid.bid.value)
     ).error((data) ->
-      console.log data
+      # console.log data
     )
 
   # Remover
@@ -87,7 +80,7 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $filter, $http, Results) ->
 
   # $scope.cart =
   #   add: (id) ->
-  #     found = $filter('filter')($scope.searchData, {id: id}, true)
+  #     found = $filter('filter')($rootScope.searchData, {id: id}, true)
   #     if found.length
   #       console.log JSON.stringify(found[0])
 

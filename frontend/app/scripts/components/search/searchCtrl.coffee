@@ -1,13 +1,36 @@
+###*
+ # @ngdoc function
+ # @name marketplaceApp.controller:SearchCtrl
+ # @description
+ # # SearchCtrl
+ # Controller principal do marketplace.
+ # Retorna buscas, refaz modais de busca, usa serviços de resultados e listagens
+ # Em um refactor, imagino retirar do $rootScope e colocar em serviços
+ # as variáveis usadas globalmente
+###
+
 'use strict'
 
-app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $log, Results) ->
+app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout, $q, $log, Results) ->
 # TODO: rows with ng-repeat
 # http://angularjs4u.com/filters/angularjs-template-divs-row/
 
   $scope.results = 'scripts/components/results/resultsView.html'
+  $scope.canSearch = false
 
-  $scope.filterData = []
-  $scope.showModal = false
+  # Variáveis de dados globais (dados persistentes entre páginas)
+
+  # Pega os dados de busca mesmo se o usuário mudar de página
+  if typeof $rootScope.searchData is 'undefined'
+    $scope.searchData = []
+  else
+    $scope.searchData = $rootScope.searchData
+
+  # Pega os parâmetros de busca mesmo se o usuário mudar de página
+  if typeof $rootScope.filterData is 'undefined'
+    $scope.filterData = []
+  else
+    $scope.filterData = $rootScope.filterData
 
   # Coloca o total do carrinho numa variável global
   if typeof $rootScope.cartTotal != 'undefined'
@@ -15,19 +38,27 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $log, Results) ->
   else
     $rootScope.cartTotal = 0
 
-  $scope.resultData =
-    count: 10
+  $scope.cartResults = []
+  handleCartResults = (data, status) ->
+    if status == 200
+      $scope.cartResults = data
+    else
+      $scope.cartResults = 'Erro ao retornar os dados'
 
-  $scope.goCart = ->
-    window.location.href='/bids'
+  Results.cart().success(handleCartResults)
 
+  # Formatador de resultado
   $scope.formatResults = (counter) ->
     if counter > 1
       $scope.resultLabel = counter + ' resultados'
-    else if results == 1
+    else if counter == 1
       $scope.resultLabel = counter + ' resultado'
     else
-      $scope.resultLabel = 'Sua busca não retornou resultados'
+      $scope.resultLabel = 'Sem resultados'
+
+
+  $scope.goCart = ->
+    window.location.href='/bids'
 
   $scope.newSearch = (size) ->
     modalInstance = $modal.open(
@@ -35,6 +66,7 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $log, Results) ->
       # controller: 'SearchCtrl'
       controller: 'FilterCtrl'
       size: 'lg'
+      backdrop: 'static'
       resolve:
         advertisers: ->
           $scope.advertisers
@@ -48,101 +80,203 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $log, Results) ->
           $scope.regions
         makeFilter: ->
           $scope.makeFilter
-        filterData: ->
-          $scope.filterData
+        superSearchString: ->
+          $scope.superSearchString
     )
-    # modalInstance.result.then ((selectedItem) ->
-    #   $scope.filterData = selectedItem
-    #   return
-    # ), ->
-    #   $log.info "Modal dismissed at: " + new Date()
-    #   return
-
-  # $scope.newSearch = ->
-  #   $scope.showModal = true
 
   $scope.makeFilter = ->
+    $scope.superSearchString = ''
+    $scope.filterData = []
     angular.forEach $scope.categories, (value, key) ->
-      consolidateFilterValues(value, key)
+      if value.ticked
+        $scope.superSearchString += '&category_id[]=' + value.id
+        $scope.filterData.push(value)
     angular.forEach $scope.weekdays, (value, key) ->
-      consolidateFilterValues(value, key)
+      if value.ticked
+        $scope.superSearchString += '&week_day_id[]=' + value.id
+        $scope.filterData.push(value)
+    angular.forEach $scope.determinations, (value, key) ->
+      if value.ticked
+        $scope.superSearchString += '&determination_id[]=' + value.id
+        $scope.filterData.push(value)
+    angular.forEach $scope.regions, (value, key) ->
+      if value.ticked
+        $scope.superSearchString += '&state_id[]=' + value.id
+        $scope.filterData.push(value)
 
-  consolidateFilterValues = (value, keys) ->
-    $scope.filterData.push(value) if value.ticked
+    $rootScope.filterData = $scope.filterData
+    sendFilter($scope.superSearchString)
+    return
+
+  sendFilter = (data) ->
+    Results.sendFilter(data).success((data) ->
+      $rootScope.searchData = data
+      $scope.searchData = data
+    )
+
+  # Modal para confirmação de mudança de advertiser
+  $scope.willOpenAdvertiserModal = {}
+  $scope.$watch 'selectedAdvertiser', (newValue, oldValue) ->
+    if (newValue != $scope.willOpenAdvertiserModal) and (newValue != oldValue)
+      # A model do advertiser selecionado
+      confirmModal = $modal.open(
+        templateUrl: 'scripts/shared/utils/modalConfirmView.html'
+        controller: 'ModalCtrl'
+        size: 'sm'
+        backdrop: 'static'
+        resolve:
+          theId: ->
+            $scope.selectedAdvertiser
+          title: ->
+            'Mudança de advertiser'
+          message: ->
+            'Ao alterar essa opção o conteúdo do seu carrinho será apagado.'
+          labelOk: ->
+            'Tudo bem!'
+          labelCancel: ->
+            'Cancelar'
+      )
+      confirmModal.result.then ((isConfirmed) ->
+        if isConfirmed
+          $scope.eraseCart()
+        else
+          $scope.selectedAdvertiser = oldValue
+      )
+
+  # Apaga o conteúdo do carrinho
+  $scope.eraseCart = ->
+    Results.empty().success((data) ->
+      data
+      $rootScope.cartTotal = 0
+    )
+
+  # Fix para selectbox de advertiser
+  $scope.checkAdvertiser = ->
+    $scope.willOpenAdvertiserModal = $scope.selectedAdvertiser
+
+  # Listagem de dados do servidor ou local
+  # É local depois da primeira lida.
+  # Considerei que dificilmente o usuário precisará da listagem mais de uma vez por acesso
+  if typeof $rootScope.listingAllData is 'undefined'
+    determination = Results.list('/determination')
+    advertiser = Results.list('/advertiser')
+    weekday = Results.list('/weekday')
+    category = Results.list('/category')
+    region = Results.list('/region')
+    $q.all([
+      advertiser
+      category
+      weekday
+      determination
+      region
+    ]).then (data) ->
+      $rootScope.listingAllData = data
+      $scope.advertisers = data[0].data
+      $scope.categories = data[1].data
+      $scope.weekdays = data[2].data
+      $scope.determinations = data[3].data
+      $scope.regions = data[4].data
+      # You can search now
+      $scope.canSearch = true
+  else
+    $scope.advertisers = $rootScope.listingAllData[0].data
+    $scope.categories = $rootScope.listingAllData[1].data
+    $scope.weekdays = $rootScope.listingAllData[2].data
+    $scope.determinations = $rootScope.listingAllData[3].data
+    $scope.regions = $rootScope.listingAllData[4].data
+    $scope.canSearch = true
+
+  # Ordenação de resultado
+
+  # Modo de Visualização
+  # aceita "view-regular" ou "view-compact"
+  $scope.viewMode = 'view-regular'
+
+  # Ordenação começa de forma ascendente
+  $scope.isOrderAsc = true
+  $scope.toggleOrder = ->
+    $scope.isOrderAsc = not $scope.isOrderAsc
+
+  # Tooltip dinâmica de acordo com a ordenação
+  $scope.orderTooltip = ->
+    if $scope.isOrderAsc then 'Trocar para ordem decrescente' else 'Trocar para ordem crescente'
+
+  # Abre o modal em first load
+  $timeout (->
+    # Somente se ele já não estiver aberto!!!
+    $log.info 'vamos abrir a busca'
+    if typeof $modalStack.getTop() is 'undefined'
+      $scope.newSearch()
+      return
+  ), 3000
+
+  # Ações do carrinho
+
+  # Utilitários
+  # Verifica se já foi adicionado
+  if typeof $rootScope.isAddedToCart is 'undefined'
+    $scope.isAddedToCart = {}
+    $rootScope.isAddedToCart = {}
+  else
+    $scope.isAddedToCart = $rootScope.isAddedToCart
+
+  $scope.isAddingToCart = {}
+
+  # Adicionar
+  # TODO: Refatorar
+  $scope.addToCart = (item, index) ->
+    # newItem = {}
+    # Ações ao adicionar:
+    # 1 - Loading no botão, para preparar para a chamada ajax
+    # 2 - envia dados para o carrinho
+    # 3 - no sucesso, desabilita o botão de adicionar, adiciona ícone de "adicionado" e desliga loading
+    # 4 - acrescenta quantidade e atualiza valor ao carrinho
+
+    # adicionamos manualmente a quantidade 1 caso quantity não exista
+    # if item.quantity
+    #   newItem.quantity = item.quantity
+    # else
+    #   newItem.quantity = 1
+
+    # 1 - Loading no botão, para preparar para a chamada ajax
+    $scope.isAddingToCart[index] = true
+
+    # # Prepara item para envio
+    # newItem.comment = ''
+    # newItem.price = item.bid.value
+    # newItem.ads = []
+    # newItem.ads[0] =
+    #   comment: ''
+    #   date: ''
+    #   price: item.bid.value
+
+    # newItem.features = item
+
+    # 2 - envia dados para o carrinho
+    Results.add(item.hash).success((data) ->
+      # 3 - no sucesso, desabilita o botão de adicionar, adiciona ícone de "adicionado" e desliga loading
+      $rootScope.isAddedToCart[index] = true
+      $scope.isAddedToCart[index] = true
+      $scope.isAddingToCart[index] = false
+      # 4 - acrescenta quantidade e atualiza valor ao carrinho
+      $rootScope.cartTotal = parseFloat($rootScope.cartTotal) + parseFloat(item.bid.value)
+    ).error((data) ->
+      # console.log data
+    )
+
+  # Remover
+  $scope.removeFromCart = (bidId) ->
+    Results.delete(bidId).success((data) ->
+      data
+    )
+
+  # $scope.cart =
+  #   add: (id) ->
+  #     found = $filter('filter')($scope.searchData, {id: id}, true)
+  #     if found.length
+  #       console.log JSON.stringify(found[0])
+
+  # $scope.testando = (item) ->
+  #   console.log item
 
 
-  # Dados que deveriam vir do servidor (mock)
-  $scope.advertisers =  [
-    {
-      name: 'Cdv'
-      id: 1
-    }
-    {
-      name: 'Vdv'
-      id: 2
-    }
-    {
-      name: 'Adv'
-      id: 3
-    }
-  ]
-
-  $scope.categories = [
-    {
-      name: 'Esportes'
-      id: 1
-    }
-    {
-      name: 'Classificados'
-      id: 2
-    }
-    {
-      name: 'Entretenimento'
-      id: 3
-    }
-  ]
-
-  $scope.determinations = [
-    {
-      name: 'Meia Página'
-      id: 1
-    }
-    {
-      name: 'Muita Página'
-      id: 2
-    }
-    {
-      name: 'Página demais'
-      id: 3
-    }
-  ]
-
-  $scope.regions = [
-    {
-      name: 'Madagascar'
-      id: 1
-    }
-    {
-      name: 'São Paulo'
-      id: 2
-    }
-    {
-      name: 'Plutão'
-      id: 3
-    }
-  ]
-
-  $scope.weekdays = [
-    {
-      name: 'Segunda'
-      id: 1
-    }
-    {
-      name: 'Quarta'
-      id: 2
-    }
-    {
-      name: 'Quinta'
-      id: 3
-    }
-  ]

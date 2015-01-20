@@ -1,20 +1,24 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
-      <h2>Busca de Ofertas</h2>
+      <h2>Busca de Ofertas:</h2>
     </div>
     <div class="col-md-4 col-md-offset-1">
       <div class="advertiser-toggle">
         <span class="advertiser-label">Anunciante</span>
         <!-- Single button -->
+        <!--
         <div class="btn-group" dropdown is-open="status.isopen">
           <button type="button" class="btn btn-info dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-            Predicta <span class="caret"></span>
+            {{ advertiser.description }} <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li ng-repeat="advertiser in advertisers"><a href="#">{{ advertiser.name }}</a></li>
+            <li ng-repeat="advertiser in advertisers"><a href="#" ng-modal="{{ advertiser.description }}">{{ advertiser.description }}</a></li>
           </ul>
         </div>
+        -->
+        <select ng-model="selectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control select-advertiser" ng-click="checkAdvertiser()">
+        </select>
       </div>
     </div>
     <div class="col-md-4">
@@ -22,9 +26,11 @@
         <span class="cart-icon">
           <i class="ficon ficon-basket"></i>
         </span>
+<!--
         <span class="cart-quantity">
           <span>1</span>
         </span>
+ -->
         <span class="cart-total">
           <span class="price-label">R$</span>
           <span class="price-value" ng-model="cartTotal">{{ cartTotal | currency:"" }}</span>
@@ -38,12 +44,14 @@
     <div class="col-md-12">
       <span class="terms-label fort search-labels">Seus critérios</span>
       <div class="terms-box boxed">
-        <span class="label label-info" ng-repeat="criteria in filterData">{{ criteria.name }}</span>&nbsp;
+        <span class="label label-info" ng-repeat="criteria in filterData | limitTo:6">{{ criteria.description }}</span>&nbsp;
         <span ng-hide="filterData.length">Sem resultados, por favor refaça a busca</span>
       </div>
-      <button type="button" class="btn btn-primary pull-right" ng-click="newSearch()">Nova busca <i class="ficon ficon-down-open"></i></button>
+      <button type="button" class="btn btn-primary pull-right" ng-click="newSearch()" ng-class="{ 'disabled': !canSearch }">
+        Nova busca <i class="ficon" ng-class="{ 'ficon-down-open': canSearch, 'ficon-arrows-ccw ficon-flip-horizontal ficon-spin': !canSearch }"></i>
+      </button>
     </div>
   </div>
 </div>
 
-<div ng-include="results" ng-controller="ResultsCtrl"></div>
+<div ng-include="results"></div>

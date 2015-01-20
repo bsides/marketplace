@@ -663,9 +663,10 @@ module.exports = (grunt) ->
           'angular-route/angular-route.js': 'angular-route/angular-route.js'
           'angular-sanitize/angular-sanitize.js': 'angular-sanitize/angular-sanitize.js'
           'angular-touch/angular-touch.js': 'angular-touch/angular-touch.js'
-          'moment/moment.js': 'moment/moment.js'
+          # 'moment/moment.js': 'moment/moment.js'
           'angular-bootstrap/ui-bootstrap-tpls.js': 'angular-bootstrap/ui-bootstrap-tpls.js'
           'angular-i18n/angular-locale_pt-br.js': 'angular-i18n/angular-locale_pt-br.js'
+          'angular-local-storage/dist/angular-local-storage.js': 'angular-local-storage/dist/angular-local-storage.js'
 
     # Run some tasks in parallel to speed up the build process
     concurrent:
@@ -679,6 +680,12 @@ module.exports = (grunt) ->
       ]
       dist: [
         'coffee'
+        'compass:dist'
+        'imagemin'
+        'svgmin'
+      ]
+      build: [
+        'coffee:dist'
         'compass:dist'
         'imagemin'
         'svgmin'
