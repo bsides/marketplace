@@ -21,14 +21,16 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
       #     value.itemsfront.push(val)
 
       #   value.publisher = value.features.publisher.id
-      localStorageService.set('localCartData', data)
-      localValue = localStorageService.get('localCartData')
-      if angular.equals(data, localValue)
-        $scope.getCartData = localValue
-      else
-        localStorageService.remove('localCartData')
-        localValue = {}
-        $scope.getCartData = data
+
+      # localStorageService.set('localCartData', data)
+      # localValue = localStorageService.get('localCartData')
+      # if angular.equals(data, localValue)
+      #   $scope.getCartData = localValue
+      # else
+      #   localStorageService.remove('localCartData')
+      #   localValue = {}
+      localStorageService.remove('localCartData')
+      $scope.getCartData = data
 
       # Precisamos que data.ads seja um array desde já, mesmo se vazio
       angular.forEach $scope.getCartData, (value, keys) ->
@@ -40,6 +42,8 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
               price: parseFloat(newValue.features.bid.value).toFixed(2)
             ]
             newValue.quantity = 1
+          else
+            newValue.quantity = newValue.ads.length
 
     else if Object.keys(data).length == 0
       $scope.getCartData =
@@ -153,8 +157,12 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
       # E no seu sucesso enviamos a proposta. Esse é somente um GET.
       Results.sendBid($scope.getCartData).success((data) ->
         $log.info 'Enviou a proposta com sucesso.'
+        $log.info data
       )
     )
+
+  $scope.$watch 'item.ads.length', (newValue, oldValue) ->
+    $log.info newValue
 
   # Data coming from server
   # $scope.bidData = [
