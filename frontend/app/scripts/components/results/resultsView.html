@@ -5,7 +5,7 @@
 
       <div class="filter-box">
         <span class="filter-label">preco</span>
-        <select name="" id="" class="form-control whitey-sel" ng-model="selectedPriceRange" ng-init="selectedPriceRange = 'all'">
+        <select class="form-control whitey-sel" ng-model="selectedPriceRange" ng-init="selectedPriceRange = 'all'">
           <option value="all">todos</option>
           <option value="1000-" selected="selected">até R$1.000,00</option>
           <option value="999,20001">de R$1.000,00 até R$20.000,00</option>
@@ -16,24 +16,24 @@
 
       <div class="filter-box">
         <span class="filter-label">dias da semana</span>
-        <select name="" id="" class="form-control whitey-sel" ng-model="selectedWeekday">
+        <select class="form-control whitey-sel" ng-model="selectedWeekday">
           <option value="">dias escolhidos</option>
-          <option value="Seg">Somente Segunda</option>
-          <option value="Ter">Somente Terça</option>
-          <option value="Qua">Somente Quarta</option>
-          <option value="Qui">Somente Quinta</option>
-          <option value="Sex">Somente Sexta</option>
-          <option value="Sab">Somente Sábado</option>
-          <option value="Dom">Somente Domingo</option>
+          <option value="1">Somente Segunda</option>
+          <option value="2">Somente Terça</option>
+          <option value="3">Somente Quarta</option>
+          <option value="4">Somente Quinta</option>
+          <option value="5">Somente Sexta</option>
+          <option value="6">Somente Sábado</option>
+          <option value="7">Somente Domingo</option>
         </select>
       </div>
 
       <div class="filter-box">
         <span class="filter-label">cores</span>
         <select name="" id="" class="form-control whitey-sel" ng-model="selectedColor">
-          <option value="">Cromia</option>
-          <option value="">PB</option>
-          <option value="">Rosa Nike XOKS</option>
+          <option value="">cores selecionads</option>
+          <option value="2">Somente Cromia</option>
+          <option value="1">Somente PB</option>
         </select>
       </div>
     </div>
@@ -52,9 +52,9 @@
           <div class="ordering btn-group">
             <select name="" id="" class="form-control whitey-sel" ng-model="selectedOrder">
               <option value="">Ordenar aleatoriamente</option>
-              <option value="name">Ordenar por jornal</option>
-              <option value="price">Ordenar por preço</option>
-              <option value="column">Ordenar por caderno</option>
+              <option value="publisher.description">Ordenar por jornal</option>
+              <option value="bid.value">Ordenar por preço</option>
+              <option value="description">Ordenar por caderno</option>
             </select>
             <!-- <button type="button" class="hide btn btn-default" ng-class="{ 'disabled' : !selectedOrder }" ng-click="toggleOrder()" ng-attr-title="{{ orderTooltip() }}" tooltip="{{ orderTooltip() }}" tooltip-placement="bottom"><i class="ficon" ng-class="isOrderAsc ? 'ficon-sort-alt-up' : 'ficon-sort-alt-down'"></i></button> -->
           </div>
@@ -74,48 +74,51 @@
 
       <div class="search-results" ng-class="viewMode">
         <div class="row" ng-repeat="result in (searchData.length / 3 | returnArray)">
-          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) | orderBy:selectedOrder:!isOrderAsc | filter:weekDay:selectedWeekday | priceBetween:selectedPriceRange">
-
+          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) track by result.hash | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="section">
-                  <table ng-attr-id="bid-{{ result.id }}">
+                  <table ng-attr-id="bid-{{ $index }}">
                     <tr class="top">
                       <td rowspan="3" colspan="3" class="week-day">
                         <a href="#">
-                          <div class="week mon">{{ result.weekDay }}</div>
+                          <div class="week mon">{{ result.week_day.code }}</div>
                         </a>
                       </td>
                       <td colspan="4">
-                        <h4>{{ result.name }}</h4>
+                        <h4>{{ result.publisher.description }}</h4>
                       </td>
-                      <td class="added" ng-show="isAddedToCart[result.id]">
+                      <td class="added" ng-show="isAddedToCart[result.hash]">
                         <div><i class="ficon ficon-basket"></i></div>
                       </td>
                     </tr>
                     <tr class="info">
                       <td>formato</td>
-                      <td colspan="2"><strong>{{ result.format }}</strong></td>
+                      <td colspan="2"><strong>{{ result.format.description }}</strong></td>
                     </tr>
                     <tr class="info">
                       <td>caderno</td>
-                      <td colspan="2"><strong>{{ result.column }}</strong></td>
+                      <td colspan="2"><strong>{{ result.description }}</strong></td>
                     </tr>
                     <tr>
-                      <td colspan="3">
+                      <td colspan="3" ng-if="result.color.code == 'CROMIA'">
                         <div class="polychrome cyan"></div>
                         <div class="polychrome yellow"></div>
                         <div class="polychrome magenta"></div>
+                      </td>
+                      <td colspan="3" ng-if="result.color.code == 'PB'">
+                        <div class="polychrome black"></div>
+                        <div class="polychrome white"></div>
                       </td>
                       <td colspan="3" class="reg"><i class="ficon ficon-location"></i> <span>ver regiões</span></td>
                       <td colspan="2"></td>
                     </tr>
                     <tr>
                       <td colspan="6">
-                        <div class="text-right full-price">R$ <span class="price">{{ result.price | currency:'' }}</span></div>
+                        <div class="text-right full-price">R$ <span class="price">{{ result.bid.value | currency:'' }}</span></div>
                       </td>
                       <td colspan="2" class="text-right">
-                        <button type="button" class="btn btn-primary" ng-click="addToCart(result)" ng-disabled="isAddedToCart[result.id]"><span ng-show="!isAddingToCart[result.id] && !isAddedToCart[result.id]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.id] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.id] }"></i></button>
+                        <button type="button" class="btn btn-primary" ng-click="addToCart(result, result.hash)" ng-disabled="isAddedToCart[result.hash]"><span ng-show="!isAddingToCart[result.hash] && !isAddedToCart[result.hash]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.hash] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.hash] }"></i></button>
                       </td>
                     </tr>
                   </table>
@@ -130,8 +133,3 @@
     </div>
   </div>
 </div>
-
-
-<pre>
-  {{ searchData }}
-</pre>

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3c1bb9b962bbad4b5b25459658d25dae",
+    "hash": "4e48d92340f31293900bd28dfe810d0a",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "23210e0381057c5976b15dae52ef389fa180e09f"
+                "reference": "dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/23210e0381057c5976b15dae52ef389fa180e09f",
-                "reference": "23210e0381057c5976b15dae52ef389fa180e09f",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a",
+                "reference": "dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a",
                 "shasum": ""
             },
             "require": {
@@ -96,13 +96,13 @@
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.7",
-                "predis/predis": "~0.8",
+                "predis/predis": "~1.0",
                 "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -142,7 +142,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-01-11 19:26:38"
+            "time": "2015-01-17 21:05:51"
         },
         {
             "name": "doctrine/collections",
@@ -666,11 +666,11 @@
         },
         {
             "name": "predicta/direct-api-sdk-php",
-            "version": "v0.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git@gitlab.corp.predicta.com.br:infra/direct_api_sdk_php.git",
-                "reference": "68b68fb32a5beb4f9b6c79b9766b6030e92eee83"
+                "reference": "58b0b79fd7dcc4e1fd2766ee79ee29a2a4141c27"
             },
             "require": {
                 "guilhermewop/apigility-client": "v0.1.0",
@@ -706,7 +706,7 @@
                 "zend framework 2",
                 "zend module"
             ],
-            "time": "2015-01-13 22:42:35"
+            "time": "2015-01-15 21:20:29"
         },
         {
             "name": "zendframework/zendframework",
@@ -714,12 +714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zf2.git",
-                "reference": "8615f24ebdfa905cc719be3c57649e93ea40ef20"
+                "reference": "4513cc4b754cd6535ce9a216dcaacf7170738746"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/8615f24ebdfa905cc719be3c57649e93ea40ef20",
-                "reference": "8615f24ebdfa905cc719be3c57649e93ea40ef20",
+                "url": "https://api.github.com/repos/zendframework/zf2/zipball/4513cc4b754cd6535ce9a216dcaacf7170738746",
+                "reference": "4513cc4b754cd6535ce9a216dcaacf7170738746",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +824,7 @@
                 "framework",
                 "zf2"
             ],
-            "time": "2015-01-14 16:48:09"
+            "time": "2015-01-18 18:30:18"
         },
         {
             "name": "zendframework/zendxml",
@@ -955,12 +955,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "85267e2b891f541eee6c2330f9cf1cdcb5322176"
+                "reference": "0461cf664d653565f9ce764a50130d2454087d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/85267e2b891f541eee6c2330f9cf1cdcb5322176",
-                "reference": "85267e2b891f541eee6c2330f9cf1cdcb5322176",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0461cf664d653565f9ce764a50130d2454087d16",
+                "reference": "0461cf664d653565f9ce764a50130d2454087d16",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1015,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-01-14 03:56:43"
+            "time": "2015-01-19 01:52:12"
         },
         {
             "name": "symfony/config",
@@ -1348,6 +1348,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "predicta/cas-api-sdk-php": 20,
+        "predicta/direct-api-sdk-php": 20,
         "zendframework/zftool": 20,
         "zendframework/zend-developer-tools": 20,
         "phpmd/phpmd": 0,

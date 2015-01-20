@@ -18,9 +18,9 @@ return [
                 ],
             ],
             'cart-add' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/cart/add',
+                    'route'    => '/cart/add[/:hash]',
                     'defaults' => [
                         '__NAMESPACE__' => 'ShoppingCart\Controller',
                         'controller'    => 'Index',
@@ -47,6 +47,17 @@ return [
                         '__NAMESPACE__' => 'ShoppingCart\Controller',
                         'controller'    => 'Index',
                         'action'        => 'empty',
+                    ],
+                ),
+            ),
+            'cart-exists' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/cart/exists',
+                    'defaults' => [
+                        '__NAMESPACE__' => 'ShoppingCart\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'exists',
                     ],
                 ),
             ),

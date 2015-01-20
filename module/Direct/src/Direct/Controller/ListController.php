@@ -31,12 +31,10 @@ class ListController extends AbstractActionController
      */
     public function newspaperAction()
     {
-        $newspaper = $this->getServiceLocator()
-                          ->get( 'Newspaper' );
+        $service = $this->getServiceLocator()->get('direct.common.publisher');
+        $id = $this->params('id', null);
 
-        $id = (int)$this->params( 'id' );
-
-        return new JsonModel( $newspaper->get( $id ) );
+        return new JsonModel($service->fetch($id)['data']);
     }
 
     /**
@@ -86,19 +84,6 @@ class ListController extends AbstractActionController
     /**
      * @return JsonModel
      */
-    public function profileAction()
-    {
-        $service = $this->getServiceLocator()
-                        ->get( 'profile' );
-
-        $id = (int)$this->params( 'id' );
-
-        return new JsonModel( $service->get( $id ) );
-    }
-
-    /**
-     * @return JsonModel
-     */
     public function weekDayAction()
     {
         $service = $this->getServiceLocator()->get('direct.common.weekday');
@@ -110,13 +95,22 @@ class ListController extends AbstractActionController
     /**
      * @return JsonModel
      */
-    public function columnAction()
+    public function advertiserAction()
     {
-        $service = $this->getServiceLocator()
-                        ->get( 'Column' );
+        $service = $this->getServiceLocator()->get('direct.common.advertiser');
+        $id = $this->params('id', null);
 
-        $id = (int)$this->params( 'id' );
+        return new JsonModel($service->fetch($id)['data']);
+    }
 
-        return new JsonModel( $service->get( $id ) );
+    /**
+     * @return JsonModel
+     */
+    public function regionAction()
+    {
+        $service = $this->getServiceLocator()->get('direct.common.geo.state');
+        $id = $this->params('id', null);
+
+        return new JsonModel($service->fetch($id)['data']);
     }
 }

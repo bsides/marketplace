@@ -4,11 +4,13 @@
       <strong>Anunciante</strong>
       <select name="advertisers" ng-model="isAdvertiser" class="form-control">
         <option value="">Selecione um Anunciante</option>
-        <option ng-repeat="advertiser in advertisers | orderBy:'name'" value="{{ advertiser.id }}">{{ advertiser.name }}</option>
+        <option ng-repeat="advertiser in advertisers | orderBy:'description'" value="{{ advertiser.id }}">{{ advertiser.description }}</option>
       </select>
     </div>
   </div>
-  <div class="panel panel-default wp-search" ng-class="{ 'disabled': !isAdvertiser }">
+  <div class="panel panel-default wp-search">
+<!--   <div class="panel panel-default wp-search" ng-class="{ 'disabled': !isAdvertiser }">
+ -->
     <div class="panel-body">
       <strong>Busca de Ofertas</strong>
       <span>Preencha ao menos um dos campos para prosseguir</span>
@@ -22,20 +24,21 @@
           <div class="row whitey">
             <div class="col-md-3">* categoria</div>
             <div class="col-md-9">
-              <div multi-select input-model="categories" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="categories" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row whitey">
             <div class="col-md-3">dia da semana</div>
             <div class="col-md-9">
-              <div multi-select input-model="weekdays" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="weekdays" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-12">
               <button type="button" class="btn btn-primary" ng-click="ok()">Buscar</button>
+              <button type="button" class="btn btn-default" ng-click="closeModal()">Sair</button>
             </div>
           </div>
 
@@ -50,20 +53,21 @@
           <div class="row whitey">
             <div class="col-md-3">* determinação</div>
             <div class="col-md-9">
-              <div multi-select input-model="determinations" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="determinations" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row whitey">
             <div class="col-md-3">dia da semana</div>
             <div class="col-md-9">
-              <div multi-select input-model="weekdays" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="weekdays" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-12">
               <button type="button" class="btn btn-primary" ng-click="ok()">Buscar</button>
+              <button type="button" class="btn btn-default" ng-click="closeModal()">Sair</button>
             </div>
           </div>
 
@@ -77,7 +81,7 @@
           <div class="row whitey">
             <div class="col-md-3">* dia da semana</div>
             <div class="col-md-9">
-              <div multi-select input-model="weekdays" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="weekdays" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
@@ -96,20 +100,21 @@
           <div class="row whitey">
             <div class="col-md-3">* região</div>
             <div class="col-md-9">
-              <div multi-select input-model="regions" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="regions" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row whitey">
             <div class="col-md-3">* dia da semana</div>
             <div class="col-md-9">
-              <div multi-select input-model="weekdays" button-label="name" item-label="name" tick-property="ticked"></div>
+              <div multi-select input-model="weekdays" button-label="description" item-label="description" tick-property="ticked"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-12">
               <button type="button" class="btn btn-primary" ng-click="ok()">Buscar</button>
+              <button type="button" class="btn btn-default" ng-click="closeModal()">Sair</button>
             </div>
           </div>
         </tab>

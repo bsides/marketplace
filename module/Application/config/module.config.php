@@ -40,6 +40,36 @@ return [
                     ),
                 ),
             ),
+            'search' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/search',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'Index',
+                    ),
+                ),
+            ),
+            'purchases' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/purchases',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'Index',
+                    ),
+                ),
+            ),
+            'bids' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/bids',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'Index',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
