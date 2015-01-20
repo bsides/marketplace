@@ -27,6 +27,15 @@
       }
     }
   }
+  .prices {
+    margin-left: 5px;
+    padding: 8px 5px;
+    top: -8px;
+
+    input {
+      width: auto;
+    }
+  }
 }
 
 .infos-purchase {
@@ -62,5 +71,20 @@
         }
       }
     }
+  }
+}
+
+.prices {
+  background-color: #e1faed;
+  margin-left: -15px;
+  padding: 5px;
+  position: relative;
+  top: -2px;
+
+  input {
+    background: none;
+    border: none;
+    text-align: right;
+    width: 140px;
   }
 }

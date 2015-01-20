@@ -4,21 +4,6 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $http, $log, Results) ->
 # rows with ng-repeat
 # http://angularjs4u.com/filters/angularjs-template-divs-row/
 
-  # Try to get results
-  $scope.searchData = []
-
-  handleAllResults = (data, status) ->
-    if status == 200
-      $scope.searchData = data
-    else
-      $scope.searchData = null
-
-  # Deal with them
-  Results.get().success(handleAllResults)
-
-  # Counter
-  $scope.countResults = $scope.searchData.length
-
   # Formatador de resultado
   $scope.formatResults = (counter) ->
     if counter > 1
@@ -27,6 +12,14 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $http, $log, Results) ->
       $scope.resultLabel = counter + ' resultado'
     else
       $scope.resultLabel = ''
+
+  # Put results in local variable
+  if typeof $rootScope.searchData is 'undefined'
+    $scope.searchData = []
+    $scope.countResults = 0
+  else
+    $scope.countResults = $rootScope.searchData.length
+    $scope.searchData = $rootScope.searchData
 
   # Ordenação de resultado
 
@@ -87,7 +80,7 @@ app.controller 'ResultsCtrl', ($scope, $rootScope, $http, $log, Results) ->
 
   # $scope.cart =
   #   add: (id) ->
-  #     found = $filter('filter')($scope.searchData, {id: id}, true)
+  #     found = $filter('filter')($rootScope.searchData, {id: id}, true)
   #     if found.length
   #       console.log JSON.stringify(found[0])
 

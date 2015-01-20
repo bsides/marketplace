@@ -17,6 +17,6 @@ class Deal
      */
     public function save($params)
     {
-        throw new Exception();
+        return true;
     }
 }

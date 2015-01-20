@@ -52,9 +52,9 @@
           <div class="ordering btn-group">
             <select name="" id="" class="form-control whitey-sel" ng-model="selectedOrder">
               <option value="">Ordenar aleatoriamente</option>
-              <option value="newspaper">Ordenar por jornal</option>
+              <option value="publisher.description">Ordenar por jornal</option>
               <option value="bid.value">Ordenar por preço</option>
-              <option value="category">Ordenar por caderno</option>
+              <option value="description">Ordenar por caderno</option>
             </select>
             <!-- <button type="button" class="hide btn btn-default" ng-class="{ 'disabled' : !selectedOrder }" ng-click="toggleOrder()" ng-attr-title="{{ orderTooltip() }}" tooltip="{{ orderTooltip() }}" tooltip-placement="bottom"><i class="ficon" ng-class="isOrderAsc ? 'ficon-sort-alt-up' : 'ficon-sort-alt-down'"></i></button> -->
           </div>
@@ -74,12 +74,11 @@
 
       <div class="search-results" ng-class="viewMode">
         <div class="row" ng-repeat="result in (searchData.length / 3 | returnArray)">
-          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
-
+          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) track by result.hash | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="section">
-                  <table ng-attr-id="bid-{{ result.id }}">
+                  <table ng-attr-id="bid-{{ $index }}">
                     <tr class="top">
                       <td rowspan="3" colspan="3" class="week-day">
                         <a href="#">
@@ -87,9 +86,9 @@
                         </a>
                       </td>
                       <td colspan="4">
-                        <h4>FALTA JORNAL{{ result.newspaper }}</h4>
+                        <h4>{{ result.publisher.description }}</h4>
                       </td>
-                      <td class="added" ng-show="isAddedToCart[result.id]">
+                      <td class="added" ng-show="isAddedToCart[result.hash]">
                         <div><i class="ficon ficon-basket"></i></div>
                       </td>
                     </tr>
@@ -99,7 +98,7 @@
                     </tr>
                     <tr class="info">
                       <td>caderno</td>
-                      <td colspan="2"> <strong ng-repeat="caderno in result.category">{{ caderno.description }}</strong></td>
+                      <td colspan="2"><strong>{{ result.description }}</strong></td>
                     </tr>
                     <tr>
                       <td colspan="3" ng-if="result.color.code == 'CROMIA'">
@@ -119,7 +118,7 @@
                         <div class="text-right full-price">R$ <span class="price">{{ result.bid.value | currency:'' }}</span></div>
                       </td>
                       <td colspan="2" class="text-right">
-                        <button type="button" class="btn btn-primary" ng-click="addToCart(result)" ng-disabled="isAddedToCart[result.id]"><span ng-show="!isAddingToCart[result.id] && !isAddedToCart[result.id]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.id] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.id] }"></i></button>
+                        <button type="button" class="btn btn-primary" ng-click="addToCart(result, result.hash)" ng-disabled="isAddedToCart[result.hash]"><span ng-show="!isAddingToCart[result.hash] && !isAddedToCart[result.hash]">Adicionar</span><span ng-class="{ 'hide' : !isAddedToCart[result.hash] }">ok</span> <i class="ficon ficon-arrows-ccw ficon-flip-horizontal ficon-spin" ng-class="{ 'hide' : !isAddingToCart[result.hash] }"></i></button>
                       </td>
                     </tr>
                   </table>

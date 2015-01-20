@@ -26,7 +26,11 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($em);
         $authService = $sm->get('auth.service');
+<<<<<<< HEAD
         $this->restrictLogin($e, $authService, array('login'), 'login');
+=======
+        //$this->restrictLogin($e, $authService, array('login'), 'login');
+>>>>>>> rafael/cart-develop
     }
 
     public function getConfig()

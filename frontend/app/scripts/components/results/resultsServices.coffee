@@ -3,12 +3,14 @@
 app.factory 'Results', ($http) ->
   url =
     get: '/direct/item'
-    add: '/cart/add'
+    add: '/cart/add/'
     remove: '/cart/delete/'
     cart: '/cart'
     search: '/direct/item'
     list: '/direct/list'
     empty: '/cart/empty'
+    sendCart: '/direct/deal/send'
+    updateCart: '/cart/update'
 
   cartTotal: (price) ->
     price = price + price
@@ -17,17 +19,10 @@ app.factory 'Results', ($http) ->
     $http.get(url.get)
 
   add: (bid) ->
-    $http(
-      method: 'POST'
-      url: url.add
-      data: bid
-    )
+    $http.get(url.add + bid)
 
   delete: (bidId) ->
-    $http(
-      method: 'POST'
-      url: url.remove + bidId
-    )
+    $http.get(url.remove + bidId)
 
   empty: ->
     $http.get(url.empty)
@@ -36,12 +31,17 @@ app.factory 'Results', ($http) ->
     $http.get(url.cart)
 
   sendFilter: (theFilter) ->
-    # $http(
-    #   method: 'GET'
-    #   url: url.search
-    #   data: theFilter
-    # )
     $http.get(url.search + '?' + theFilter)
 
   list: (theFilter) ->
     $http.get(url.list + theFilter)
+
+  sendCart: (array) ->
+    $http.get(url.sendCart)
+
+  updateCart: (array) ->
+    $http(
+      method: 'POST'
+      url: url.changeCart
+      data: array
+    )

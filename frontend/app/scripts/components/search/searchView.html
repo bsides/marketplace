@@ -17,7 +17,7 @@
           </ul>
         </div>
         -->
-        <select ng-model="selectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control" ng-click="checkAdvertiser()">
+        <select ng-model="selectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control select-advertiser" ng-click="checkAdvertiser()">
         </select>
       </div>
     </div>
@@ -26,9 +26,11 @@
         <span class="cart-icon">
           <i class="ficon ficon-basket"></i>
         </span>
+<!--
         <span class="cart-quantity">
           <span>1</span>
         </span>
+ -->
         <span class="cart-total">
           <span class="price-label">R$</span>
           <span class="price-value" ng-model="cartTotal">{{ cartTotal | currency:"" }}</span>
@@ -52,4 +54,4 @@
   </div>
 </div>
 
-<div ng-include="results" ng-controller="ResultsCtrl"></div>
+<div ng-include="results"></div>

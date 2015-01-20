@@ -1,178 +1,205 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <h2>Carrinho | Proposta</h2>
-    </div>
-    <div class="col-md-4">
-      <div class="cart-button">
-        <span class="cart-icon">
-          <i class="ficon ficon-basket"></i>
-        </span>
-        <span class="cart-quantity">
-          <span>1</span>
-        </span>
-        <span class="cart-total">
-          <span class="price-label">R$</span>
-          <span class="price-value">{{ cartTotal | currency:"" }}</span>
-        </span>
+<div ng-if="!getCartData.error">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Carrinho | Proposta</h2>
+      </div>
+      <div class="col-md-4">
+        <div class="cart-button">
+          <span class="cart-icon">
+            <i class="ficon ficon-basket"></i>
+          </span>
+          <span class="cart-total">
+            <span class="price-label">R$</span>
+            <span class="price-value">{{ cartTotal | currency:"" }}</span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="container">
-
-  <div class="panel panel-default items-by-newspaper" ng-repeat="bid in bidData">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-md-8"><i class="ficon ficon-doc-1"></i> Jornal: {{ bid.description }}</div>
-        <div class="col-md-3"><button class="btn btn-info"><i class="ficon ficon-comment"></i>observações gerais</button></div>
-        <div class="col-md-1 text-right"><button class="btn btn-info" ng-click="removeBid(bid.id)"><i class="ficon ficon-trash"></i></button></div>
-      </div>
-    </div>
-    <div class="panel-body" ng-repeat="item in bid.items">
-      <div class="resume">
-        <table>
-          <tr>
-            <td><strong>características</strong></td>
-            <td>caderno<br><span class="label label-info">{{ item.category }}</span></td>
-            <td>formato<br><span class="label label-info">{{ item.format }}</span></td>
-            <td>categoria<br><span class="label label-info">{{ item.category }}</span></td>
-            <td>dia da semana<br><span class="label label-info" ng-repeat="week in item.weekdays">{{ week }}</span></td>
-            <td>determinação<br><span class="label label-info">{{ item.determination }}</span></td>
-            <td>região<br><span class="label label-info"><button>ver regiões</button></span></td>
-            <td ng-if="item.color == 'Cromia'">
-              cor<br>
-              <div class="polychrome cyan"></div>
-              <div class="polychrome yellow"></div>
-              <div class="polychrome magenta"></div>
-            </td>
-            <td ng-if="item.color == 'PB'">
-              cor<br>
-              <div class="polychrome black"></div>
-              <div class="polychrome white"></div>
-            </td>
-            <td>quantidade<br>
-              <select id="{{ item.id }}" ng-model="selectedQuantity" ng-init="selectedQuantity = item.quantity">
-                <option value="1" selected="selected">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-              </select>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div>
-        <div class="row head">
-          <div class="col-md-7"><strong>itens adicionados</strong></div>
-          <div class="col-md-1">observações</div>
-          <div class="col-md-2 text-center">*data de publicação</div>
-          <div class="col-md-2 text-center">valor</div>
-        </div>
-        <div class="row body" ng-repeat="sel in range(selectedQuantity) track by $index">
-          <div class="col-md-7"><button class="btn btn-info" ng-click="removeBid($index)"><i class="ficon ficon-trash"></i></button> Anúncio {{ sel + 1 }}</div>
-          <div class="col-md-1 text-center">
-            <button class="btn btn-info" ng-click="toggleComment(item.id)"><i class="ficon ficon-comment"></i></button>
-            <div class="comment" ng-show="isCommenting[item.id]">
+  <div class="container">
+    <div class="panel panel-default items-by-newspaper" ng-repeat="bid in getCartData">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-8"><i class="ficon ficon-doc-1"></i> Jornal: {{ bid.description }}</div>
+          <div class="col-md-3">
+            <button class="btn btn-info" ng-click="toggleComment(bid.id, true)"><i class="ficon ficon-comment"></i>observações gerais</button>
+            <div class="comment" ng-show="isCommenting[bid.id]">
+              <h5>Observações</h5>
               <form action="">
-                <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
-                <button type="button" class="btn btn-default" ng-click="toggleComment(item.id)">cancelar</button>
-                <button type="button" class="btn btn-primary" ng-click="saveComment(item.id)">salvar</button>
+                <textarea name="" id="" cols="30" rows="10" class="form-control" ng-model="bid.comment"></textarea>
+                <div class="pull-right">
+                  <button type="button" class="btn btn-default" ng-click="toggleComment(bid, false)">apagar</button>
+                  <button type="button" class="btn btn-primary" ng-click="toggleComment(bid.id, true)">salvar</button>
+                </div>
               </form>
             </div>
           </div>
-          <div class="col-md-2 text-center">
-            <!-- <p class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{ dateFormat }}" ng-model="theDate" is-open="dateOpened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabledDates(date, mode)" ng-required="true" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openDate($event)"><i class="ficon ficon-calendar"></i></button>
-              </span>
-            </p> -->
-            <i class="ficon ficon-calendar"></i><input type="text" size="8">
-          </div>
-          <div class="col-md-2 text-center"><strong>{{ item.price | currency:"" }}</strong></div>
-        </div>
-        <div class="row foot">
-          <div class="col-md-12 text-right"><strong>Total R$</strong><span class="label"> 20.000,00</span></div>
+          <div class="col-md-1 text-right"><button class="btn btn-info" ng-click="removeBid(bid)"><i class="ficon ficon-trash"></i></button></div>
         </div>
       </div>
-    </div>
-  </div>
-
+      <div class="panel-body" ng-repeat="(key, item) in bid.items track by item.features.hash">
+        <div class="resume">
+          <table class="table">
+            <tr>
+              <td rowspan="2"><strong>características</strong></td>
+              <td>caderno</td>
+              <td>formato</td>
+              <td>categoria</td>
+              <td>dia da semana</td>
+              <td>determinação</td>
+              <!-- <td>região</td> -->
+              <td ng-if="item.features.color.description == 'Cromia'">
+                cor
+              </td>
+              <td ng-if="item.features.color.description == 'PB'">
+                cor<br>
+                <div class="polychrome black"></div>
+                <div class="polychrome white"></div>
+              </td>
+              <td>quantidade</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="label label-info">{{ item.features.description }}</span>
+              </td>
+              <td>
+                <span class="label label-info">{{ item.features.format.description }}</span>
+              </td>
+              <td>
+                <span class="label label-info" ng-repeat="category in item.features.category">{{ category.description }}</span>
+              </td>
+              <td>
+                <span class="label label-info">{{ item.features.week_day.description }}</span>
+              </td>
+              <td>
+                <span class="label label-info">{{ item.features.determination.description }}</span>
+              </td>
 <!--
-  <div class="panel panel-default items-by-newspaper">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-md-8"><i class="ficon ficon-doc-1"></i> Jornal : Estado de São Paulo</div>
-        <div class="col-md-3"><button class="btn btn-info"><i class="ficon ficon-comment"></i>observações gerais</button></div>
-        <div class="col-md-1 text-right"><button class="btn btn-info"><i class="ficon ficon-trash"></i></button></div>
+              <td>
+                <span class="label label-info"><button>ver regiões</button></span>
+              </td>
+ -->
+              <td ng-if="item.features.color.id == 2">
+                <div class="polychrome cyan"></div>
+                <div class="polychrome yellow"></div>
+                <div class="polychrome magenta"></div>
+              </td>
+              <td ng-if="item.features.color.id == 1">
+                <div class="polychrome black"></div>
+                <div class="polychrome white"></div>
+              </td>
+              <td>
+<!--
+                <select ng-model="item.quantity" ng-change="changeQuantity(key, item.quantity)">
+                  <option value="1" selected="selected">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+-->
+                <div class="input-group bid-quantity">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="delQty(item)"><i class="ficon ficon-minus-circled"></i></button>
+                  </span>
+                  <input type="text" class="form-control" ng-model="item.quantity">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="addQty(item)"><i class="ficon ficon-plus-circled"></i></button>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="ad-item">
+          <div class="row head">
+            <div class="col-md-6"><strong>itens adicionados</strong></div>
+            <div class="col-md-1">observações</div>
+            <div class="col-md-3 text-center">*data de publicação</div>
+            <div class="col-md-2 text-center">valor</div>
+          </div>
+          <div class="row body" ng-repeat="ad in item.ads track by $index">
+            <div class="col-md-6"><button class="btn btn-info ad-remove" ng-click="delQty(item, $index)" ng-class="{ 'disabled': $index == 0 }"><i class="ficon ficon-trash"></i></button> Anúncio {{ $index + 1 }}</div>
+            <div class="col-md-1 text-center">
+              <button class="btn btn-info" ng-click="toggleComment(item.hash, true, $index)"><i class="ficon ficon-comment"></i></button>
+              <div class="comment" ng-show="isCommenting[item.hash + $index]">
+                <h5>Observações</h5>
+                <form action="">
+                  <textarea name="" id="" cols="30" rows="10" class="form-control" ng-model="ad.comment"></textarea>
+                  <div class="pull-right">
+                    <button type="button" class="btn btn-default" ng-click="toggleComment(ad, false, $index)">apagar</button>
+                    <button type="button" class="btn btn-primary" ng-click="toggleComment(item.hash, true, $index)">salvar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="col-md-3 text-center ad-date">
+              <div class="input-group">
+                <input type="text" class="form-control" datepicker-popup="{{ dateFormat }}" ng-model="ad.date" is-open="dateOpened[item.hash + $index]" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabledDates(date, mode, item.features.week_day.id)" ng-required="true" close-text="Fechar" clear-text="Limpar" current-text="Hoje"datepicker-append-to-body="true" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="openDate($event, item.hash + $index)"><i class="ficon ficon-calendar"></i></button>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-2 text-center"><strong>{{ ad.price | currency:"R$ " }}</strong></div>
+          </div>
+          <div class="row foot">
+            <div class="col-md-12 text-right">
+              <strong>Total R$</strong><span class="label" ng-model="itemSubTotal[item.hash]" ng-init="itemSubTotal[item.hash] = item.features.bid.value * item.quantity; cartTotal = cartTotal + itemSubTotal">{{ item.features.bid.value *  item.quantity | currency:'' }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="panel-body">
-      <div class="resume">
-        <table>
-          <tr>
-            <td><strong>características</strong></td>
-            <td>caderno<br><span class="label label-info">Esportes</span></td>
-            <td>formato<br><span class="label label-info">meia página</span></td>
-            <td>categoria<br><span class="label label-info">Esportes</span></td>
-            <td>dia da semana<br><span class="label label-info">domingo</span></td>
-            <td>determinação<br><span class="label label-info">capa</span></td>
-            <td>região<br><span class="label label-info"><button>ver regiões</button></span></td>
-            <td>
-              cor<br>
-              <div class="polychrome cian"></div>
-              <div class="polychrome yellow"></div>
-              <div class="polychrome magent"></div>
-            </td>
-            <td>quantidade<br><select><option>1</option></select></td>
-          </tr>
-        </table>
+
+    <div class="value-purchase">
+      <span>Total da compra
+        <span>{{ cartTotalFn() | currency:"" }}</span>
+      </span>
+    </div>
+
+    <div class="actions">
+<!--
+      <button type="button" class="btn btn-default" aria-expanded="false" ng-click="goSearch()">
+        cancelar
+      </button>
+ -->
+      <button type="button" class="btn btn-primary" aria-expanded="false" ng-click="sendCart()">
+        enviar proposta
+      </button>
+    </div>
+
+  </div>
+</div>
+<div ng-if="getCartData.error">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Carrinho | Proposta</h2>
       </div>
-
-      <div>
-        <div class="row head">
-          <div class="col-md-7"><strong>itens adicionados</strong></div>
-          <div class="col-md-1">observações</div>
-          <div class="col-md-2 text-center">*data de publicação</div>
-          <div class="col-md-2 text-center">valor</div>
-        </div>
-
-        <div class="row body">
-          <div class="col-md-7"><button class="btn btn-info"><i class="ficon ficon-trash"></i></button> Anúncio 1</div>
-          <div class="col-md-1 text-center"><button class="btn btn-info"><i class="ficon ficon-comment"></i></button></div>
-          <div class="col-md-2 text-center"><i class="ficon ficon-calendar"></i><input type="text" size="8"></div>
-          <div class="col-md-2 text-center"><strong>100.000,00</strong></div>
-        </div>
-        <div class="row body">
-          <div class="col-md-7"><button class="btn btn-info"><i class="ficon ficon-trash"></i></button> Anúncio 1</div>
-          <div class="col-md-1 text-center"><button class="btn btn-info"><i class="ficon ficon-comment"></i></button></div>
-          <div class="col-md-2 text-center"><i class="ficon ficon-calendar"></i><input type="text" size="8"></div>
-          <div class="col-md-2 text-center"><strong>100.000,00</strong></div>
-        </div>
-        <div class="row foot">
-          <div class="col-md-12 text-right"><strong>Total R$</strong><span class="label"> 20.000,00</span></div>
+      <div class="col-md-4">
+        <div class="cart-button disabled">
+          <span class="cart-icon">
+            <i class="ficon ficon-basket"></i>
+          </span>
+          <span class="cart-quantity">
+            <span>0</span>
+          </span>
+          <span class="cart-total">
+            <span class="price-label">R$</span>
+            <span class="price-value">{{ cartTotal | currency:"" }}</span>
+          </span>
         </div>
       </div>
     </div>
-  </div> -->
-
-  <div class="value-purchase">
-    <span>Total da compra
-      <span>{{ cartTotal | currency:"" }}</span>
-    </span>
   </div>
-
-  <div class="actions">
-    <button type="button" class="btn btn-default" aria-expanded="false" ng-click="goSearch()">
-      cancelar
-    </button>
-    <button type="button" class="btn btn-primary" aria-expanded="false" ng-click="goSearch()">
-      enviar proposta
-    </button>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <alert type="{{ getCartData.type }}" alert-dismissable="false">{{ getCartData.message }}</alert>
+      </div>
+    </div>
   </div>
-
 </div>

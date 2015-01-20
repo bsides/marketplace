@@ -45,7 +45,6 @@ class IndexController extends AbstractActionController
 
     public function deleteAction()
     {
-        $request = $this->getRequest();
         if ('0' !== ($hash = (string) $this->params('id'))) {
             $cart = $this->getServiceLocator()->get('cart.service');
             $cart->removeItem($hash);
@@ -55,7 +54,6 @@ class IndexController extends AbstractActionController
 
     public function emptyAction()
     {
-        $request = $this->getRequest();
         $cart = $this->getServiceLocator()->get('cart.service');
         $cart->clear();
         return new JsonModel(['message' => 'success']);

@@ -201,6 +201,14 @@ module.exports = (grunt) ->
           dest: '<%= yeoman.public %>/styles/'
         ]
 
+      build:
+        files: [
+          expand: true
+          cwd: '<%= yeoman.public %>/styles/'
+          src: '{,*/}*.css'
+          dest: '<%= yeoman.public %>/styles/'
+        ]
+
 
     # Automatically inject Bower components into the app
     wiredep:
@@ -347,6 +355,23 @@ module.exports = (grunt) ->
           debugInfo: true
 
       dev:
+        options:
+          debugInfo: true
+          sassDir: '<%= yeoman.app %>/styles'
+          cssDir: '<%= yeoman.public %>/styles'
+          generatedImagesDir: '.tmp/images/generated'
+          imagesDir: '<%= yeoman.public %>/images'
+          javascriptsDir: '<%= yeoman.public %>/scripts'
+          fontsDir: '<%= yeoman.public %>/styles/fonts'
+          importPath: './bower_components'
+          httpImagesPath: '/images'
+          httpGeneratedImagesPath: '/images/generated'
+          httpFontsPath: '/styles/fonts'
+          relativeAssets: false
+          assetCacheBuster: false
+          raw: 'Sass::Script::Number.precision = 10\n'
+
+      build:
         options:
           debugInfo: true
           sassDir: '<%= yeoman.app %>/styles'
@@ -663,9 +688,10 @@ module.exports = (grunt) ->
           'angular-route/angular-route.js': 'angular-route/angular-route.js'
           'angular-sanitize/angular-sanitize.js': 'angular-sanitize/angular-sanitize.js'
           'angular-touch/angular-touch.js': 'angular-touch/angular-touch.js'
-          'moment/moment.js': 'moment/moment.js'
+          # 'moment/moment.js': 'moment/moment.js'
           'angular-bootstrap/ui-bootstrap-tpls.js': 'angular-bootstrap/ui-bootstrap-tpls.js'
           'angular-i18n/angular-locale_pt-br.js': 'angular-i18n/angular-locale_pt-br.js'
+          'angular-local-storage/dist/angular-local-storage.js': 'angular-local-storage/dist/angular-local-storage.js'
 
     # Run some tasks in parallel to speed up the build process
     concurrent:
@@ -678,8 +704,14 @@ module.exports = (grunt) ->
         'compass'
       ]
       dist: [
-        'coffee'
-        'compass:dist'
+        'coffee:dev'
+        'compass:build'
+        'imagemin'
+        'svgmin'
+      ]
+      build: [
+        'coffee:dev'
+        'compass:build'
         'imagemin'
         'svgmin'
       ]
@@ -769,15 +801,18 @@ module.exports = (grunt) ->
     grunt.log.subhead 'OBS - Essa tarefa apaga os diretórios de destino antes de compilar os arquivos'
     try
       grunt.task.run [
-        'clean:dist'
+        'clean:public'
+        'clean:layout'
+        'clean:index'
         'html2js:bootstrap'
         'html2js:marketplace'
+        'html2js:multiselect'
         'wiredep'
         'useminPrepare'
         'concurrent:dist'
-        'autoprefixer:dist'
+        'autoprefixer:build'
         'concat'
-        'ngAnnotate'
+        # 'ngAnnotate'
         'copy:dist'
         #'cdnify'
         'cssmin'
