@@ -37,6 +37,7 @@ class DealController extends AbstractActionController
             try {
                 $deal = new Model\Deal();
                 $deal->save($cart->items);
+                $cart->clear();
                 return new JsonModel( ['result' => 'success'] );
             } catch ( Exception $e ) {
                 $this->getResponse()->setStatusCode(418);

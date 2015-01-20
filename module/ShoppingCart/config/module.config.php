@@ -50,14 +50,14 @@ return [
                     ],
                 ),
             ),
-            'cart-exists' => array(
+            'cart-update' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/cart/exists',
+                    'route'    => '/cart/update',
                     'defaults' => [
                         '__NAMESPACE__' => 'ShoppingCart\Controller',
                         'controller'    => 'Index',
-                        'action'        => 'exists',
+                        'action'        => 'update',
                     ],
                 ),
             ),
