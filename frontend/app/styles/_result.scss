@@ -64,16 +64,14 @@
     }
     tr + tr + tr + tr {
       width: 23%;
-      margin-top: 20px;
     }
     tr + tr + tr + tr + tr {
       width: 28%;
-      margin-top: 10px;
       margin-bottom: 6px;
     }
     tr {
       float: left;
-      margin-top: 30px;
+      margin-top: 23px;
       min-width: 10%;
 
       &.info td {
@@ -100,6 +98,7 @@
         }
       }
       &.week-day {
+        padding-top: 2px;
         width: auto;
       }
       &.format {
