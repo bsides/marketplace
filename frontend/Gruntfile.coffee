@@ -373,7 +373,7 @@ module.exports = (grunt) ->
 
       build:
         options:
-          debugInfo: true
+          debugInfo: false
           sassDir: '<%= yeoman.app %>/styles'
           cssDir: '<%= yeoman.public %>/styles'
           generatedImagesDir: '.tmp/images/generated'
@@ -820,7 +820,6 @@ module.exports = (grunt) ->
         'filerev'
         'usemin'
         'htmlmin'
-        'clean:public'
         'copy:build'
       ]
       grunt.verbose.ok()

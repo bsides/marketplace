@@ -202,12 +202,14 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     if $scope.isOrderAsc then 'Trocar para ordem decrescente' else 'Trocar para ordem crescente'
 
   # Abre o modal em first load
-  $timeout (->
-    # Somente se ele já não estiver aberto!!!
-    if typeof $modalStack.getTop() is 'undefined'
-      $scope.newSearch()
-      return
-  ), 6000
+  $scope.$watch '[searchData,canSearch]', ((newValue, oldValue) ->
+    # Se o usuário puder procurar e não tiver procurado ainda
+    if (newValue[0].length < 1) and (newValue[1])
+      # Abre o modal caso não esteja aberto
+      if typeof $modalStack.getTop() is 'undefined'
+        $scope.newSearch()
+        return
+  ), true
 
   # Ações do carrinho
 
