@@ -201,14 +201,6 @@ module.exports = (grunt) ->
           dest: '<%= yeoman.public %>/styles/'
         ]
 
-      build:
-        files: [
-          expand: true
-          cwd: '<%= yeoman.public %>/styles/'
-          src: '{,*/}*.css'
-          dest: '<%= yeoman.public %>/styles/'
-        ]
-
 
     # Automatically inject Bower components into the app
     wiredep:
@@ -645,6 +637,15 @@ module.exports = (grunt) ->
               '*.phtml'
               'images/{,*/}*.{webp}'
               'fonts/{,*/}*.*'
+              'scripts/ui-templates.js'
+              'scripts/ui-multiselect.js'
+              'scripts/marketplace-templates.js'
+              'styles/**/*.css'
+              'styles/**/*.{css,eot,svg,ttf,woff}'
+              'scripts/**/*.{js,html}'
+              'index.php'
+              'images/**/*'
+              '.htaccess'
             ]
           }
           {
@@ -802,6 +803,7 @@ module.exports = (grunt) ->
     try
       grunt.task.run [
         'clean:public'
+        'clean:dist'
         'clean:layout'
         'clean:index'
         'html2js:bootstrap'
@@ -810,9 +812,9 @@ module.exports = (grunt) ->
         'wiredep'
         'useminPrepare'
         'concurrent:dist'
-        'autoprefixer:build'
+        'autoprefixer:dist'
         'concat'
-        # 'ngAnnotate'
+        'ngAnnotate'
         'copy:dist'
         #'cdnify'
         'cssmin'
