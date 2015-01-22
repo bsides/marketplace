@@ -27,6 +27,7 @@ module.exports = (grunt) ->
     public: '../public'
     layout: '../module/Direct/view/layout'
     index: '../module/Direct/view/index'
+    login: '../module/Application/view/application/auth'
     bower: 'bower_components'
 
 
@@ -177,6 +178,8 @@ module.exports = (grunt) ->
 
       layout: '<%= setupPaths.layout %>/{,*/}*'
 
+      login: '<%= setupPaths.login %>/{,*/}*'
+
       index: '<%= setupPaths.index %>/{,*/}*'
 
 
@@ -205,7 +208,7 @@ module.exports = (grunt) ->
     # Automatically inject Bower components into the app
     wiredep:
       app:
-        src: ['<%= setupPaths.app %>/layout.phtml']
+        src: ['<%= setupPaths.app %>/layout.phtml','<%= setupPaths.app %>/login.phtml']
         exclude: [
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js'
@@ -396,7 +399,7 @@ module.exports = (grunt) ->
     # concat, minify and revision files. Creates configurations in memory so
     # additional tasks can operate on them
     useminPrepare:
-      html: '<%= setupPaths.app %>/layout.phtml'
+      html: '<%= setupPaths.app %>/{layout,login}.phtml',
       options:
         dest: '<%= setupPaths.dist %>'
         flow:
@@ -479,6 +482,7 @@ module.exports = (grunt) ->
           cwd: '<%= setupPaths.dist %>'
           src: [
             'layout.phtml'
+            'login.phtml'
             '**/*.html'
           ]
           dest: '<%= setupPaths.dist %>'
@@ -544,6 +548,14 @@ module.exports = (grunt) ->
           dest: '<%= setupPaths.layout %>/'
           src: 'layout.phtml'
         ]
+      login:
+        files: [
+          expand: true
+          dot: true
+          cwd: '<%= setupPaths.app %>'
+          dest: '<%= setupPaths.login %>/'
+          src: 'login.phtml'
+        ]
       index:
         files: [
           expand: true
@@ -592,6 +604,12 @@ module.exports = (grunt) ->
           {
             expand: true
             cwd: '<%= setupPaths.dist %>'
+            src: 'login.phtml'
+            dest: '<%= setupPaths.login %>/'
+          }
+          {
+            expand: true
+            cwd: '<%= setupPaths.dist %>'
             src: 'index.phtml'
             dest: '<%= setupPaths.index %>/'
           }
@@ -616,6 +634,7 @@ module.exports = (grunt) ->
               '**'
               '!layout.phtml'
               '!index.phtml'
+              '!login.phtml'
               '!index.html'
               '!**/bower_components/**'
             ]
@@ -804,6 +823,7 @@ module.exports = (grunt) ->
         'clean:public'
         'clean:dist'
         'clean:layout'
+        'clean:login'
         'clean:index'
         'html2js:bootstrap'
         'html2js:marketplace'
