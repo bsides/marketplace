@@ -48,6 +48,7 @@ module.exports = (config) ->
     # - IE (only Windows)
     browsers: [
       'PhantomJS'
+      'Chrome'
     ]
 
     # Which plugins to enable
