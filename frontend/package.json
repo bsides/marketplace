@@ -4,6 +4,12 @@
   "dependencies": {
     "numeral": "^1.5.3"
   },
+  "description": "Marketplace: Procura de anúncios e envio de propostas com base no Direct",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.corp.predicta.com.br:infra/marketplace.git"
+  },
+  "private": true,
   "devDependencies": {
     "coffee-script": "^1.8.0",
     "coffeelint": "^1.6.1",
