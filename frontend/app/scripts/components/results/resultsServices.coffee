@@ -9,8 +9,8 @@ app.factory 'Results', ($http) ->
     search: '/direct/item'
     list: '/direct/list'
     empty: '/cart/empty'
-    sendCart: '/direct/deal/send'
-    changeCart: '/cart/update'
+    sendBid: '/direct/deal/send'
+    updateCart: '/cart/update'
 
   cartTotal: (price) ->
     price = price + price
@@ -36,12 +36,12 @@ app.factory 'Results', ($http) ->
   list: (theFilter) ->
     $http.get(url.list + theFilter)
 
-  sendCart: (array) ->
-    $http.get(url.sendCart)
+  sendBid: (array) ->
+    $http.post(url.sendBid)
 
-  changeCart: (array) ->
+  updateCart: (array) ->
     $http(
       method: 'POST'
-      url: url.changeCart
+      url: url.updateCart
       data: array
     )

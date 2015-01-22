@@ -2,6 +2,7 @@ frontend/node_modules
 frontend/dist
 frontend/.tmp
 frontend/.sass-cache
+frontend/npm-debug.log
 frontend/bower_components
 frontend/app/scripts/marketplace-templates.js
 frontend/app/scripts/ui-templates.js

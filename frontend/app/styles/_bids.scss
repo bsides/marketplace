@@ -69,13 +69,19 @@
 
       input.form-control {
         min-width: 38px;
-        text-align: right;
+        text-align: center;
+        background: rgba(223, 242, 252, 0.8);
+        border: 0;
+        box-shadow: none;
       }
       button {
         background: none;
         border: 0;
         padding-left: 2px;
         padding-right: 2px;
+        width: 32px;
+        min-width: inherit;
+        margin-right: 3px;
 
         &:focus {
           outline: none;

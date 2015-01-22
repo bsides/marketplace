@@ -8,6 +8,7 @@
  */
 namespace Direct\Controller;
 
+use Exception;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Direct\Model;
@@ -30,10 +31,19 @@ class DealController extends AbstractActionController
      */
     public function sendAction()
     {
-        $post = $this->getRequest()->getPost()->toArray();
-        $deal = new Model\Deal();
-        $deal->save($post);
-        return new JsonModel( ['result' => 'success'] );
+        $cart = $this->getServiceLocator()->get('cart.service');
+        $request = $this->getRequest();
+        if ($request->isPost() && count($cart->items) > 0) {
+            try {
+                $deal = new Model\Deal();
+                $deal->save($cart->items);
+                $cart->clear();
+                return new JsonModel( ['result' => 'success'] );
+            } catch ( Exception $e ) {
+                $this->getResponse()->setStatusCode(418);
+            }
+        }
+        return new JsonModel( [] );
     }
 
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageService, Results) ->
+app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results) ->
 
   # Try to get results
   $scope.getCartData = []
@@ -15,12 +15,25 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
   # Carrega os resultados ou retorna erro caso não der
   handleAllResults = (data, status) ->
     if status == 200 and Object.keys(data).length > 0
+
       # angular.forEach data, (value, key) ->
       #   value.itemsfront = []
       #   angular.forEach value.items, (val, k) ->
       #     value.itemsfront.push(val)
 
-      #   value.publisher = value.features.publisher.id
+      # Precisamos que data.ads seja um array desde já, mesmo se vazio
+      angular.forEach data, (value, keys) ->
+        angular.forEach value.items, (newValue, newKeys) ->
+          if newValue.ads is null
+            newValue.ads = [
+              comment: ''
+              date: $filter('date') new Date(), 'dd-MM-yyyy'
+              price: parseFloat(newValue.features.bid.value).toFixed(2)
+            ]
+            newValue.quantity = 1
+          else
+            newValue.quantity = newValue.ads.length
+
       localStorageService.set('localCartData', data)
       localValue = localStorageService.get('localCartData')
       if angular.equals(data, localValue)
@@ -29,17 +42,6 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
         localStorageService.remove('localCartData')
         localValue = {}
         $scope.getCartData = data
-
-      # Precisamos que data.ads seja um array desde já, mesmo se vazio
-      angular.forEach $scope.getCartData, (value, keys) ->
-        angular.forEach value.items, (newValue, newKeys) ->
-          if newValue.ads is null
-            newValue.ads = [
-              comment: ''
-              date: $filter('date') new Date(), 'dd-MMM-yyyy'
-              price: newValue.features.bid.value
-            ]
-            newValue.quantity = 1
 
     else if Object.keys(data).length == 0
       $scope.getCartData =
@@ -98,21 +100,12 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
     format: 'dd-MM-yyyy'
     onClose: (e) ->
 
-  $scope.dateFormats = ['dd-MMM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
+  $scope.dateFormats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
   $scope.dateFormat = $scope.dateFormats[0]
 
   # Transform into array for ng-repeat
   $scope.range = (n) ->
     Array.apply(null, {length: n}).map(Number.call, Number)
-
-  # Remove this bid
-  $scope.removeBid = (object) ->
-    angular.forEach object.items, (value, key) ->
-      Results.delete(value.hash).success((data) ->
-        Results.cart().success(handleAllResults)
-      )
-
-  $rootScope.removeBid = $scope.removeBid
 
   $scope.errorClose = ->
     delete $scope.getCartData
@@ -132,10 +125,11 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
     if obj.quantity < 10
       obj.ads.push(
         comment: ''
-        date: $filter('date') new Date(), 'dd-MMM-yyyy'
-        price: obj.features.bid.value
+        date: $filter('date') new Date(), 'dd-MM-yyyy'
+        price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
+    Results.updateCart($scope.getCartData).success(->)
 
   $scope.delQty = (obj, index) ->
     if obj.quantity > 1
@@ -145,15 +139,60 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
         obj.ads.splice(index, 1)
 
       obj.quantity = obj.quantity - 1
+    Results.updateCart($scope.getCartData).success(->)
 
   $scope.sendCart = ->
     # Primeiro alteramos o carrinho com novos ads
-    Results.changeCart($scope.getCartData).success((data) ->
-      $log.info 'Alterou carrinho com sucesso. Agora vamos enviar a proposta.'
+    Results.updateCart($scope.getCartData).success((data) ->
       # E no seu sucesso enviamos a proposta. Esse é somente um GET.
       Results.sendBid($scope.getCartData).success((data) ->
-        $log.info 'Enviou a proposta com sucesso.'
+        $scope.getCartData =
+          status: 200
+          message: 'Sua proposta foi enviada. Obrigado!'
+          sent: true
+          type: 'success'
       )
+    )
+
+  # Modal para confirmação de remoção do carrinho todo
+  $scope.removeBid = (obj) ->
+    # A model do advertiser selecionado
+    confirmModal = $modal.open(
+      templateUrl: 'scripts/shared/utils/modalConfirmView.html'
+      controller: 'ModalCtrl'
+      size: 'sm'
+      backdrop: 'static'
+      resolve:
+        theId: ->
+          obj
+        title: ->
+          'Confirmação'
+        message: ->
+          'O conteúdo do seu carrinho referente ao jornal será apagado!'
+        labelOk: ->
+          'Tudo bem!'
+        labelCancel: ->
+          'Cancelar'
+    )
+    confirmModal.result.then ((isConfirmed) ->
+      if isConfirmed
+        $scope.removeThisBid(obj)
+    )
+
+  # Remove this bid
+  $scope.removeThisBid = (object) ->
+    angular.forEach object.items, (value, key) ->
+      Results.delete(value.hash).success((data) ->
+        Results.cart().success(handleAllResults)
+      )
+
+  $rootScope.removeBid = $scope.removeBid
+
+  # Apaga o conteúdo do carrinho
+  $scope.eraseCart = ->
+    Results.empty().success((data) ->
+      data
+      $rootScope.cartTotal = 0
     )
 
   # Data coming from server

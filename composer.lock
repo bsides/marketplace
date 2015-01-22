@@ -80,12 +80,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a"
+                "reference": "23210e0381057c5976b15dae52ef389fa180e09f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a",
-                "reference": "dbeacc7bf5bcec39f7e02aa751adac2cb1ff256a",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/23210e0381057c5976b15dae52ef389fa180e09f",
+                "reference": "23210e0381057c5976b15dae52ef389fa180e09f",
                 "shasum": ""
             },
             "require": {
@@ -96,13 +96,13 @@
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.7",
-                "predis/predis": "~1.0",
+                "predis/predis": "~0.8",
                 "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -142,7 +142,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-01-17 21:05:51"
+            "time": "2015-01-11 19:26:38"
         },
         {
             "name": "doctrine/collections",
@@ -714,12 +714,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zf2.git",
-                "reference": "4513cc4b754cd6535ce9a216dcaacf7170738746"
+                "reference": "8615f24ebdfa905cc719be3c57649e93ea40ef20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/4513cc4b754cd6535ce9a216dcaacf7170738746",
-                "reference": "4513cc4b754cd6535ce9a216dcaacf7170738746",
+                "url": "https://api.github.com/repos/zendframework/zf2/zipball/8615f24ebdfa905cc719be3c57649e93ea40ef20",
+                "reference": "8615f24ebdfa905cc719be3c57649e93ea40ef20",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +824,7 @@
                 "framework",
                 "zf2"
             ],
-            "time": "2015-01-18 18:30:18"
+            "time": "2015-01-14 16:48:09"
         },
         {
             "name": "zendframework/zendxml",
@@ -955,12 +955,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "0461cf664d653565f9ce764a50130d2454087d16"
+                "reference": "65c8d2da98c1c86bfb5589a0f9264c043dde93ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0461cf664d653565f9ce764a50130d2454087d16",
-                "reference": "0461cf664d653565f9ce764a50130d2454087d16",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/65c8d2da98c1c86bfb5589a0f9264c043dde93ab",
+                "reference": "65c8d2da98c1c86bfb5589a0f9264c043dde93ab",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1015,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-01-19 01:52:12"
+            "time": "2015-01-16 05:00:42"
         },
         {
             "name": "symfony/config",

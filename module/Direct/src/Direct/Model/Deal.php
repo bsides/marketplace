@@ -1,6 +1,8 @@
 <?php
 namespace Direct\Model;
 
+use Exception;
+
 /**
  * Class Deal
  *
