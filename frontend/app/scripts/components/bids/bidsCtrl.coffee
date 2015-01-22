@@ -1,6 +1,6 @@
 'use strict'
 
-app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageService, Results) ->
+app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results) ->
 
   # Try to get results
   $scope.getCartData = []
@@ -107,15 +107,6 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
   $scope.range = (n) ->
     Array.apply(null, {length: n}).map(Number.call, Number)
 
-  # Remove this bid
-  $scope.removeBid = (object) ->
-    angular.forEach object.items, (value, key) ->
-      Results.delete(value.hash).success((data) ->
-        Results.cart().success(handleAllResults)
-      )
-
-  $rootScope.removeBid = $scope.removeBid
-
   $scope.errorClose = ->
     delete $scope.getCartData
 
@@ -161,6 +152,47 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, localStorageServi
           sent: true
           type: 'success'
       )
+    )
+
+  # Modal para confirmação de remoção do carrinho todo
+  $scope.removeBid = (obj) ->
+    # A model do advertiser selecionado
+    confirmModal = $modal.open(
+      templateUrl: 'scripts/shared/utils/modalConfirmView.html'
+      controller: 'ModalCtrl'
+      size: 'sm'
+      backdrop: 'static'
+      resolve:
+        theId: ->
+          obj
+        title: ->
+          'Confirmação'
+        message: ->
+          'O conteúdo do seu carrinho referente ao jornal será apagado!'
+        labelOk: ->
+          'Tudo bem!'
+        labelCancel: ->
+          'Cancelar'
+    )
+    confirmModal.result.then ((isConfirmed) ->
+      if isConfirmed
+        $scope.removeThisBid(obj)
+    )
+
+  # Remove this bid
+  $scope.removeThisBid = (object) ->
+    angular.forEach object.items, (value, key) ->
+      Results.delete(value.hash).success((data) ->
+        Results.cart().success(handleAllResults)
+      )
+
+  $rootScope.removeBid = $scope.removeBid
+
+  # Apaga o conteúdo do carrinho
+  $scope.eraseCart = ->
+    Results.empty().success((data) ->
+      data
+      $rootScope.cartTotal = 0
     )
 
   # Data coming from server
