@@ -205,7 +205,7 @@ module.exports = (grunt) ->
     # Automatically inject Bower components into the app
     wiredep:
       app:
-        src: ['<%= yeoman.app %>/layout.phtml','<%= yeoman.dist %>/layout.phtml']
+        src: ['<%= yeoman.app %>/layout.phtml']
         exclude: [
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js'
@@ -645,7 +645,6 @@ module.exports = (grunt) ->
               'scripts/**/*.{js,html}'
               'index.php'
               'images/**/*'
-              '.htaccess'
             ]
           }
           {
@@ -705,8 +704,8 @@ module.exports = (grunt) ->
         'compass'
       ]
       dist: [
-        'coffee:dev'
-        'compass:build'
+        'coffee:dist'
+        'compass:dist'
         'imagemin'
         'svgmin'
       ]
