@@ -48,7 +48,7 @@
               <td>categoria</td>
               <td>dia da semana</td>
               <td>determinação</td>
-              <!-- <td>região</td> -->
+              <td>região</td>
               <td ng-if="item.features.color.description == 'Cromia'">
                 cor
               </td>
@@ -75,11 +75,11 @@
               <td>
                 <span class="label label-info">{{ item.features.determination.description }}</span>
               </td>
-<!--
-              <td>
-                <span class="label label-info"><button>ver regiões</button></span>
+
+              <td class="reg" ng-click="checkRegions(item.features)" ng-class="{ 'disabled': item.features.state.length < 1 }">
+                <span class="label label-info">ver regiões</span>
               </td>
- -->
+
               <td ng-if="item.features.color.id == 2">
                 <div class="polychrome cyan"></div>
                 <div class="polychrome yellow"></div>

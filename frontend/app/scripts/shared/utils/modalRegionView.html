@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{ title }}</h3>
+</div>
+<div class="modal-body">
+  {{ message }}
+  <span class="label label-info" ng-repeat="state in regions">{{ state }}</span>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-info" ng-click="modalCancel()">{{ labelCancel }}</button>
+  <button class="btn btn-success" ng-click="modalConfirm()">{{ labelOk }}</button>
+</div>

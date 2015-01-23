@@ -2,6 +2,23 @@
 .container + .container {
   margin: 15px auto;
 }
+.search-results {
+  .reg {
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+    &:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    &.disabled,
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+}
 .whitey {
   background: $white;
   margin: 0;
@@ -141,6 +158,11 @@ h2 {
 
   .panel {
     margin-bottom: 10px;
+  }
+  .label {
+    display: inline-block;
+    margin-bottom: 5px;
+    margin-right: 3px;
   }
 }
 @media (min-width: 1199px) {
