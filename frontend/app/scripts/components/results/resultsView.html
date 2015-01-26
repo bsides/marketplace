@@ -114,7 +114,9 @@
                         <div class="polychrome black"></div>
                         <div class="polychrome white"></div>
                       </td>
-                      <td colspan="3" class="reg"><i class="ficon ficon-location"></i> <span>ver regiões</span></td>
+                      <td colspan="3" class="reg" ng-click="checkRegions(result)" ng-class="{ 'disabled': result.state.length < 1 }">
+                        <i class="ficon ficon-location"></i> <span>ver regiões</span>
+                      </td>
                       <td colspan="2"></td>
                     </tr>
                   </table>

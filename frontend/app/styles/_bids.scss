@@ -16,6 +16,20 @@
     }
   }
 
+  .reg {
+    line-height: inherit;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+    &.disabled,
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
   .panel-heading {
     background: #ffffff;
   }

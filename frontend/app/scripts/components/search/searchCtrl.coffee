@@ -214,6 +214,35 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   # Ações do carrinho
 
   # Utilitários
+  # Regions
+  $scope.checkRegions = (data) ->
+    if data.state.length < 1
+      regionMessage = 'Não existem regiões configuradas para esse item'
+    else
+      regionMessage = ''
+
+    regionModal = $modal.open(
+      templateUrl: 'scripts/shared/utils/modalRegionView.html'
+      controller: 'ModalRegionCtrl'
+      size: 'sm'
+      backdrop: 'static'
+      resolve:
+        title: ->
+          'Regiões'
+        message: ->
+          regionMessage
+        regions: ->
+          data.state
+        labelOk: ->
+          'Ok'
+        labelCancel: ->
+          'Cancelar'
+    )
+    regionModal.result.then ((isConfirmed) ->
+      if isConfirmed
+        $log.info 'fechou'
+    )
+
   # Verifica se já foi adicionado
   if typeof $rootScope.isAddedToCart is 'undefined'
     $scope.isAddedToCart = {}

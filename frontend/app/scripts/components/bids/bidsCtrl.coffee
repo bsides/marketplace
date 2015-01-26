@@ -195,6 +195,35 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       $rootScope.cartTotal = 0
     )
 
+  # Regions
+  $scope.checkRegions = (data) ->
+    if data.state.length < 1
+      regionMessage = 'Não existem regiões configuradas para esse item'
+    else
+      regionMessage = ''
+
+    regionModal = $modal.open(
+      templateUrl: 'scripts/shared/utils/modalRegionView.html'
+      controller: 'ModalRegionCtrl'
+      size: 'sm'
+      backdrop: 'static'
+      resolve:
+        title: ->
+          'Regiões'
+        message: ->
+          regionMessage
+        regions: ->
+          data.state
+        labelOk: ->
+          'Ok'
+        labelCancel: ->
+          'Cancelar'
+    )
+    regionModal.result.then ((isConfirmed) ->
+      if isConfirmed
+        $log.info 'fechou'
+    )
+
   # Data coming from server
   # $scope.bidData = [
   #   {
