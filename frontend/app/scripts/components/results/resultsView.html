@@ -60,13 +60,13 @@
           </div>
 
           <div class="ordering btn-group">
-            <label class="btn btn-default" ng-model="isOrderAsc" btn-radio="true" ng-class="{ 'disabled' : !selectedOrder }"><i class="ficon ficon-sort-alt-up"></i></label>
-            <label class="btn btn-default" ng-model="isOrderAsc" btn-radio="false" ng-class="{ 'disabled' : !selectedOrder }"><i class="ficon ficon-sort-alt-down"></i></label>
+            <label class="btn btn-default" ng-model="isOrderAsc" btn-radio="true" ng-class="{ 'disabled' : !selectedOrder }" tooltip="Trocar para ordem crescente" tooltip-placement="bottom" tooltip-append-to-body="true"><i class="ficon ficon-sort-alt-up"></i></label>
+            <label class="btn btn-default" ng-model="isOrderAsc" btn-radio="false" ng-class="{ 'disabled' : !selectedOrder }" tooltip="Trocar para ordem decrescente" tooltip-placement="bottom" tooltip-append-to-body="true"><i class="ficon ficon-sort-alt-down"></i></label>
           </div>
 
           <div class="btn-group">
-            <label class="btn btn-default" ng-model="viewMode" btn-radio="'view-regular'" tooltip="Modo completo" tooltip-placement="bottom"><i class="ficon ficon-layout"></i></label>
-            <label class="btn btn-default" ng-model="viewMode" btn-radio="'view-compact'" tooltip="Modo compacto"><i class="ficon ficon-menu"></i></label>
+            <label class="btn btn-default" ng-model="viewMode" btn-radio="'view-regular'" tooltip="Modo completo" tooltip-placement="bottom" tooltip-append-to-body="true"><i class="ficon ficon-layout"></i></label>
+            <label class="btn btn-default" ng-model="viewMode" btn-radio="'view-compact'" tooltip="Modo compacto" tooltip-placement="bottom" tooltip-append-to-body="true"><i class="ficon ficon-menu"></i></label>
           </div>
         </div>
 
@@ -74,7 +74,7 @@
 
       <div class="search-results" ng-class="viewMode">
         <div class="row" ng-repeat="result in (searchData.length / 3 | returnArray)">
-          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) track by result.hash | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
+          <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="section">
@@ -114,7 +114,9 @@
                         <div class="polychrome black"></div>
                         <div class="polychrome white"></div>
                       </td>
-                      <td colspan="3" class="reg"><i class="ficon ficon-location"></i> <span>ver regiões</span></td>
+                      <td colspan="3" class="reg" ng-click="checkRegions(result)" ng-class="{ 'disabled': result.state.length < 1 }">
+                        <i class="ficon ficon-location"></i> <span>ver regiões</span>
+                      </td>
                       <td colspan="2"></td>
                     </tr>
                   </table>

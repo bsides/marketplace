@@ -27,6 +27,7 @@ module.exports = (grunt) ->
     public: '../public'
     layout: '../module/Direct/view/layout'
     index: '../module/Direct/view/index'
+    login: '../module/Application/view/application/auth'
     bower: 'bower_components'
 
 
@@ -34,7 +35,7 @@ module.exports = (grunt) ->
   grunt.initConfig
 
     # Project settings
-    yeoman: appConfig
+    setupPaths: appConfig
 
     # Watches files for changes and runs tasks based on the changed files
     watch:
@@ -43,7 +44,7 @@ module.exports = (grunt) ->
         tasks: ['wiredep']
 
       coffee:
-        files: ['<%= yeoman.app %>/scripts/**/*.{coffee,litcoffee,coffee.md}']
+        files: ['<%= setupPaths.app %>/scripts/**/*.{coffee,litcoffee,coffee.md}']
         tasks: ['newer:coffeelint:dist', 'newer:coffee:dev']
         options:
           spawn: false
@@ -56,37 +57,37 @@ module.exports = (grunt) ->
         ]
 
       # coffeelint:
-      #   files: ['<%= yeoman.app %>/scripts/**/*.{coffee,litcoffee,coffee.md}']
+      #   files: ['<%= setupPaths.app %>/scripts/**/*.{coffee,litcoffee,coffee.md}']
       #   tasks: ['newer:coffeelint:dist']
 
       bootstrap:
-        files: ['<%= yeoman.app %>/scripts/libs/**/*.html']
+        files: ['<%= setupPaths.app %>/scripts/libs/**/*.html']
         tasks: ['html2js:bootstrap', 'copy:public']
 
       multiselect:
-        files: ['<%= yeoman.app %>/scripts/libs/**/*.html']
+        files: ['<%= setupPaths.app %>/scripts/libs/**/*.html']
         tasks: ['html2js:multiselect', 'copy:public']
 
       mktplace:
         files: [
-          '<%= yeoman.app %>/scripts/components/**/*.html'
-          '<%= yeoman.app %>/scripts/shared/**/*.html'
+          '<%= setupPaths.app %>/scripts/components/**/*.html'
+          '<%= setupPaths.app %>/scripts/shared/**/*.html'
         ]
         tasks: ['html2js:marketplace', 'copy:public']
 
       copy:
-        files: ['<%= yeoman.app %>/*.phtml']
+        files: ['<%= setupPaths.app %>/*.phtml']
         tasks: ['copy:layout', 'copy:index']
 
       compass:
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}']
+        files: ['<%= setupPaths.app %>/styles/{,*/}*.{scss,sass}']
         tasks: [
           'compass:dev'
           'autoprefixer:dev'
         ]
 
       images:
-        files: ['<%= yeoman.app %>/images/**/*']
+        files: ['<%= setupPaths.app %>/images/**/*']
         tasks: ['copy:public']
 
       gruntfile:
@@ -97,10 +98,10 @@ module.exports = (grunt) ->
           livereload: '<%= connect.options.livereload %>'
 
         files: [
-          '<%= yeoman.app %>/**/*.{html,php,phtml,coffee,js,css,scss,sass}'
+          '<%= setupPaths.app %>/**/*.{html,php,phtml,coffee,js,css,scss,sass}'
           # '.tmp/styles/**/*.css'
           # '.tmp/scripts/**/*.js'
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= setupPaths.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
 
 
@@ -137,7 +138,7 @@ module.exports = (grunt) ->
       dist:
         options:
           open: true
-          base: '<%= yeoman.dist %>'
+          base: '<%= setupPaths.dist %>'
 
 
     # Make sure code styles are up to par and there are no obvious mistakes
@@ -159,8 +160,8 @@ module.exports = (grunt) ->
           dot: true
           src: [
             '.tmp'
-            '<%= yeoman.dist %>/{,*/}*'
-            '!<%= yeoman.dist %>/.git{,*/}*'
+            '<%= setupPaths.dist %>/{,*/}*'
+            '!<%= setupPaths.dist %>/.git{,*/}*'
           ]
         ]
 
@@ -169,15 +170,17 @@ module.exports = (grunt) ->
       public:
         files: [
           src: [
-            '<%= yeoman.public %>/**/*'
-            '!<%= yeoman.public %>/index.php'
-            '!<%= yeoman.public %>/.htaccess'
+            '<%= setupPaths.public %>/**/*'
+            '!<%= setupPaths.public %>/index.php'
+            '!<%= setupPaths.public %>/.htaccess'
           ]
         ]
 
-      layout: '<%= yeoman.layout %>/{,*/}*'
+      layout: '<%= setupPaths.layout %>/{,*/}*'
 
-      index: '<%= yeoman.index %>/{,*/}*'
+      login: '<%= setupPaths.login %>/{,*/}*'
+
+      index: '<%= setupPaths.index %>/{,*/}*'
 
 
     # Add vendor prefixed styles
@@ -196,24 +199,16 @@ module.exports = (grunt) ->
       dev:
         files: [
           expand: true
-          cwd: '<%= yeoman.public %>/styles/'
+          cwd: '<%= setupPaths.public %>/styles/'
           src: '{,*/}*.css'
-          dest: '<%= yeoman.public %>/styles/'
-        ]
-
-      build:
-        files: [
-          expand: true
-          cwd: '<%= yeoman.public %>/styles/'
-          src: '{,*/}*.css'
-          dest: '<%= yeoman.public %>/styles/'
+          dest: '<%= setupPaths.public %>/styles/'
         ]
 
 
     # Automatically inject Bower components into the app
     wiredep:
       app:
-        src: ['<%= yeoman.app %>/layout.phtml','<%= yeoman.dist %>/layout.phtml']
+        src: ['<%= setupPaths.app %>/layout.phtml','<%= setupPaths.app %>/login.phtml']
         exclude: [
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js'
           'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/affix.js'
@@ -232,7 +227,7 @@ module.exports = (grunt) ->
         ignorePath: /\.\.\//
 
       sass:
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}']
+        src: ['<%= setupPaths.app %>/styles/{,*/}*.{scss,sass}']
         ignorePath: /(\.\.\/){1,2}bower_components\//
 
 
@@ -297,7 +292,7 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: '<%= yeoman.app %>/scripts'
+          cwd: '<%= setupPaths.app %>/scripts'
           src: '**/*.coffee'
           dest: '.tmp/scripts'
           ext: '.js'
@@ -315,16 +310,16 @@ module.exports = (grunt) ->
       dev:
         files: [
           expand: true
-          cwd: '<%= yeoman.app %>/scripts'
+          cwd: '<%= setupPaths.app %>/scripts'
           src: '**/*.coffee'
-          dest: '<%= yeoman.public %>/scripts'
+          dest: '<%= setupPaths.public %>/scripts'
           ext: '.js'
         ]
 
     coffeelint:
       dist:
         files:
-          src: ['<%= yeoman.app %>/scripts/**/*.coffee']
+          src: ['<%= setupPaths.app %>/scripts/**/*.coffee']
 
       options:
         configFile: 'coffeelint.json'
@@ -332,12 +327,12 @@ module.exports = (grunt) ->
     # Compiles Sass to CSS and generates necessary files if requested
     compass:
       options:
-        sassDir: '<%= yeoman.app %>/styles'
+        sassDir: '<%= setupPaths.app %>/styles'
         cssDir: '.tmp/styles'
         generatedImagesDir: '.tmp/images/generated'
-        imagesDir: '<%= yeoman.app %>/images'
-        javascriptsDir: '<%= yeoman.app %>/scripts'
-        fontsDir: '<%= yeoman.app %>/styles/fonts'
+        imagesDir: '<%= setupPaths.app %>/images'
+        javascriptsDir: '<%= setupPaths.app %>/scripts'
+        fontsDir: '<%= setupPaths.app %>/styles/fonts'
         importPath: './bower_components'
         httpImagesPath: '/images'
         httpGeneratedImagesPath: '/images/generated'
@@ -348,7 +343,7 @@ module.exports = (grunt) ->
 
       dist:
         options:
-          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+          generatedImagesDir: '<%= setupPaths.dist %>/images/generated'
 
       server:
         options:
@@ -357,12 +352,12 @@ module.exports = (grunt) ->
       dev:
         options:
           debugInfo: true
-          sassDir: '<%= yeoman.app %>/styles'
-          cssDir: '<%= yeoman.public %>/styles'
+          sassDir: '<%= setupPaths.app %>/styles'
+          cssDir: '<%= setupPaths.public %>/styles'
           generatedImagesDir: '.tmp/images/generated'
-          imagesDir: '<%= yeoman.public %>/images'
-          javascriptsDir: '<%= yeoman.public %>/scripts'
-          fontsDir: '<%= yeoman.public %>/styles/fonts'
+          imagesDir: '<%= setupPaths.public %>/images'
+          javascriptsDir: '<%= setupPaths.public %>/scripts'
+          fontsDir: '<%= setupPaths.public %>/styles/fonts'
           importPath: './bower_components'
           httpImagesPath: '/images'
           httpGeneratedImagesPath: '/images/generated'
@@ -374,12 +369,12 @@ module.exports = (grunt) ->
       build:
         options:
           debugInfo: false
-          sassDir: '<%= yeoman.app %>/styles'
-          cssDir: '<%= yeoman.public %>/styles'
+          sassDir: '<%= setupPaths.app %>/styles'
+          cssDir: '<%= setupPaths.public %>/styles'
           generatedImagesDir: '.tmp/images/generated'
-          imagesDir: '<%= yeoman.public %>/images'
-          javascriptsDir: '<%= yeoman.public %>/scripts'
-          fontsDir: '<%= yeoman.public %>/styles/fonts'
+          imagesDir: '<%= setupPaths.public %>/images'
+          javascriptsDir: '<%= setupPaths.public %>/scripts'
+          fontsDir: '<%= setupPaths.public %>/styles/fonts'
           importPath: './bower_components'
           httpImagesPath: '/images'
           httpGeneratedImagesPath: '/images/generated'
@@ -393,10 +388,10 @@ module.exports = (grunt) ->
     filerev:
       dist:
         src: [
-          '<%= yeoman.dist %>/scripts/**/*.js'
-          '<%= yeoman.dist %>/styles/{,*/}*.css'
-          # '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-          '<%= yeoman.dist %>/styles/fonts/*'
+          '<%= setupPaths.dist %>/scripts/**/*.js'
+          '<%= setupPaths.dist %>/styles/{,*/}*.css'
+          # '<%= setupPaths.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= setupPaths.dist %>/styles/fonts/*'
         ]
 
 
@@ -404,9 +399,9 @@ module.exports = (grunt) ->
     # concat, minify and revision files. Creates configurations in memory so
     # additional tasks can operate on them
     useminPrepare:
-      html: '<%= yeoman.app %>/layout.phtml'
+      html: '<%= setupPaths.app %>/{layout,login}.phtml',
       options:
-        dest: '<%= yeoman.dist %>'
+        dest: '<%= setupPaths.dist %>'
         flow:
           html:
             steps:
@@ -421,12 +416,12 @@ module.exports = (grunt) ->
 
     # Performs rewrites based on filerev and the useminPrepare configuration
     usemin:
-      html: ['<%= yeoman.dist %>/{,*/}*.phtml']
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
+      html: ['<%= setupPaths.dist %>/{,*/}*.phtml']
+      css: ['<%= setupPaths.dist %>/styles/{,*/}*.css']
       options:
         assetsDirs: [
-          '<%= yeoman.dist %>'
-          '<%= yeoman.dist %>/images'
+          '<%= setupPaths.dist %>'
+          '<%= setupPaths.dist %>/images'
         ]
 
 
@@ -437,7 +432,7 @@ module.exports = (grunt) ->
     # cssmin: {
     #   dist: {
     #     files: {
-    #       '<%= yeoman.dist %>/styles/main.css': [
+    #       '<%= setupPaths.dist %>/styles/main.css': [
     #         '.tmp/styles/{,*/}*.css'
     #       ]
     #     }
@@ -446,8 +441,8 @@ module.exports = (grunt) ->
     # uglify: {
     #   dist: {
     #     files: {
-    #       '<%= yeoman.dist %>/scripts/scripts.js': [
-    #         '<%= yeoman.dist %>/scripts/scripts.js'
+    #       '<%= setupPaths.dist %>/scripts/scripts.js': [
+    #         '<%= setupPaths.dist %>/scripts/scripts.js'
     #       ]
     #     }
     #   }
@@ -459,18 +454,18 @@ module.exports = (grunt) ->
       dist:
         files: [
           expand: true
-          cwd: '<%= yeoman.app %>/images'
+          cwd: '<%= setupPaths.app %>/images'
           src: '{,*/}*.{png,jpg,jpeg,gif}'
-          dest: '<%= yeoman.dist %>/images'
+          dest: '<%= setupPaths.dist %>/images'
         ]
 
     svgmin:
       dist:
         files: [
           expand: true
-          cwd: '<%= yeoman.app %>/images'
+          cwd: '<%= setupPaths.app %>/images'
           src: '{,*/}*.svg'
-          dest: '<%= yeoman.dist %>/images'
+          dest: '<%= setupPaths.dist %>/images'
         ]
 
     htmlmin:
@@ -484,12 +479,13 @@ module.exports = (grunt) ->
 
         files: [
           expand: true
-          cwd: '<%= yeoman.dist %>'
+          cwd: '<%= setupPaths.dist %>'
           src: [
             'layout.phtml'
+            'login.phtml'
             '**/*.html'
           ]
-          dest: '<%= yeoman.dist %>'
+          dest: '<%= setupPaths.dist %>'
         ]
 
 
@@ -511,7 +507,7 @@ module.exports = (grunt) ->
     # Replace Google CDN references
     cdnify:
       dist:
-        html: ['<%= yeoman.dist %>/*.phtml']
+        html: ['<%= setupPaths.dist %>/*.phtml']
 
 
     # Copies remaining files to places other tasks can use
@@ -521,15 +517,15 @@ module.exports = (grunt) ->
           {
             expand: true
             dot: true
-            cwd: '<%= yeoman.app %>'
-            dest: '<%= yeoman.public %>/'
+            cwd: '<%= setupPaths.app %>'
+            dest: '<%= setupPaths.public %>/'
             src: [
               'scripts/ui-templates.js'
               'scripts/ui-multiselect.js'
               'scripts/marketplace-templates.js'
               'styles/**/*.css'
               'styles/**/*.{css,eot,svg,ttf,woff}'
-              'scripts/**/*.{js,html}'
+              'scripts/**/*.{js,html,coffee}'
               'index.php'
               'images/**/*'
               '.htaccess'
@@ -541,37 +537,45 @@ module.exports = (grunt) ->
           flatten: true
           expand: true
           filter: 'isFile'
-          src: '<%= yeoman.app %>/favicons/*'
-          dest: '<%= yeoman.public %>/'
+          src: '<%= setupPaths.app %>/favicons/*'
+          dest: '<%= setupPaths.public %>/'
         ]
       layout:
         files: [
           expand: true
           dot: true
-          cwd: '<%= yeoman.app %>'
-          dest: '<%= yeoman.layout %>/'
+          cwd: '<%= setupPaths.app %>'
+          dest: '<%= setupPaths.layout %>/'
           src: 'layout.phtml'
+        ]
+      login:
+        files: [
+          expand: true
+          dot: true
+          cwd: '<%= setupPaths.app %>'
+          dest: '<%= setupPaths.login %>/'
+          src: 'login.phtml'
         ]
       index:
         files: [
           expand: true
           dot: true
-          cwd: '<%= yeoman.app %>'
-          dest: '<%= yeoman.index %>/'
+          cwd: '<%= setupPaths.app %>'
+          dest: '<%= setupPaths.index %>/'
           src: 'index.phtml'
         ]
       bowercopy:
         files: [
           expand: true
-          src: '<%= yeoman.bower %>/**/*'
-          dest: '<%= yeoman.public %>/'
+          src: '<%= setupPaths.bower %>/**/*'
+          dest: '<%= setupPaths.public %>/'
         ]
       dev:
         files: [
           {
             expand: true
             dot: true
-            cwd: '<%= yeoman.app %>'
+            cwd: '<%= setupPaths.app %>'
             dest: '.tmp/'
             src: [
               'scripts/ui-templates.js'
@@ -586,48 +590,55 @@ module.exports = (grunt) ->
             expand: true
             cwd: '.'
             src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*'
-            dest: '<%= yeoman.public %>'
+            dest: '<%= setupPaths.public %>'
           }
         ]
       build:
         files: [
           {
             expand: true
-            cwd: '<%= yeoman.dist %>'
+            cwd: '<%= setupPaths.dist %>'
             src: 'layout.phtml'
-            dest: '<%= yeoman.layout %>/'
+            dest: '<%= setupPaths.layout %>/'
           }
           {
             expand: true
-            cwd: '<%= yeoman.dist %>'
+            cwd: '<%= setupPaths.dist %>'
+            src: 'login.phtml'
+            dest: '<%= setupPaths.login %>/'
+          }
+          {
+            expand: true
+            cwd: '<%= setupPaths.dist %>'
             src: 'index.phtml'
-            dest: '<%= yeoman.index %>/'
+            dest: '<%= setupPaths.index %>/'
           }
           {
             expand: true
             filter: 'isFile'
-            cwd: '<%= yeoman.app %>/'
+            cwd: '<%= setupPaths.app %>/'
             src: 'styles/fonts/*'
-            dest: '<%= yeoman.public %>/'
+            dest: '<%= setupPaths.public %>/'
           }
           {
             flatten: true
             expand: true
             filter: 'isFile'
-            src: '<%= yeoman.app %>/favicons/*'
-            dest: '<%= yeoman.public %>/'
+            src: '<%= setupPaths.app %>/favicons/*'
+            dest: '<%= setupPaths.public %>/'
           }
           {
             expand: true
-            cwd: '<%= yeoman.dist %>/'
+            cwd: '<%= setupPaths.dist %>/'
             src: [
               '**'
               '!layout.phtml'
               '!index.phtml'
+              '!login.phtml'
               '!index.html'
               '!**/bower_components/**'
             ]
-            dest: '<%= yeoman.public %>/'
+            dest: '<%= setupPaths.public %>/'
           }
         ]
       dist:
@@ -635,8 +646,8 @@ module.exports = (grunt) ->
           {
             expand: true
             dot: true
-            cwd: '<%= yeoman.app %>'
-            dest: '<%= yeoman.dist %>'
+            cwd: '<%= setupPaths.app %>'
+            dest: '<%= setupPaths.dist %>'
             src: [
               '*.{ico,png,txt}'
               '.htaccess'
@@ -645,25 +656,33 @@ module.exports = (grunt) ->
               '*.phtml'
               'images/{,*/}*.{webp}'
               'fonts/{,*/}*.*'
+              'scripts/ui-templates.js'
+              'scripts/ui-multiselect.js'
+              'scripts/marketplace-templates.js'
+              'styles/**/*.css'
+              'styles/**/*.{css,eot,svg,ttf,woff}'
+              'scripts/**/*.{js,html}'
+              'index.php'
+              'images/**/*'
             ]
           }
           {
             expand: true
             cwd: '.tmp/images'
-            dest: '<%= yeoman.dist %>/images'
+            dest: '<%= setupPaths.dist %>/images'
             src: ['generated/*']
           }
           {
             expand: true
             cwd: '.'
             src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*'
-            dest: '<%= yeoman.dist %>'
+            dest: '<%= setupPaths.dist %>'
           }
         ]
 
       styles:
         expand: true
-        cwd: '<%= yeoman.app %>/styles'
+        cwd: '<%= setupPaths.app %>/styles'
         dest: '.tmp/styles/'
         src: '{,*/}*.css'
 
@@ -674,7 +693,7 @@ module.exports = (grunt) ->
 
       all:
         options:
-          destPrefix: '<%= yeoman.public %>/bower_components'
+          destPrefix: '<%= setupPaths.public %>/bower_components'
         files:
           'es5-shim/es5-shim.js': 'es5-shim/es5-shim.js'
           'json3/lib/json3.js': 'json3/lib/json3.js'
@@ -704,8 +723,8 @@ module.exports = (grunt) ->
         'compass'
       ]
       dist: [
-        'coffee:dev'
-        'compass:build'
+        'coffee:dist'
+        'compass:dist'
         'imagemin'
         'svgmin'
       ]
@@ -751,6 +770,7 @@ module.exports = (grunt) ->
       'clean:public'
       'clean:layout'
       'clean:index'
+      'clean:login'
       'html2js:bootstrap'
       'html2js:marketplace'
       'html2js:multiselect'
@@ -762,6 +782,7 @@ module.exports = (grunt) ->
       'copy:index'
       'copy:favicons'
       'copy:bowercopy'
+      'copy:login'
       # 'bowercopy'
       'watch'
     ]
@@ -771,6 +792,7 @@ module.exports = (grunt) ->
       'clean:public'
       'clean:layout'
       'clean:index'
+      'clean:login'
       'html2js:bootstrap'
       'html2js:marketplace'
       'wiredep'
@@ -781,6 +803,7 @@ module.exports = (grunt) ->
       'copy:index'
       'copy:favicons'
       'copy:bowercopy'
+      'copy:login'
     ]
 
   grunt.registerTask 'server', 'DEPRECATED TASK. Use the "serve" task instead', (target) ->
@@ -802,7 +825,9 @@ module.exports = (grunt) ->
     try
       grunt.task.run [
         'clean:public'
+        'clean:dist'
         'clean:layout'
+        'clean:login'
         'clean:index'
         'html2js:bootstrap'
         'html2js:marketplace'
@@ -810,9 +835,9 @@ module.exports = (grunt) ->
         'wiredep'
         'useminPrepare'
         'concurrent:dist'
-        'autoprefixer:build'
+        'autoprefixer:dist'
         'concat'
-        # 'ngAnnotate'
+        'ngAnnotate'
         'copy:dist'
         #'cdnify'
         'cssmin'

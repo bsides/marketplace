@@ -9,5 +9,7 @@ frontend/app/scripts/ui-templates.js
 public/*
 module/Direct/view/index/*
 module/Direct/view/layout/*
+module/Direct/view/layout/*
+module/Application/view/application/auth/login.phtml
 .idea/
 vendor/

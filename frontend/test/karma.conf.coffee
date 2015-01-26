@@ -48,6 +48,7 @@ module.exports = (config) ->
     # - IE (only Windows)
     browsers: [
       'PhantomJS'
+      'Chrome'
     ]
 
     # Which plugins to enable
@@ -55,6 +56,7 @@ module.exports = (config) ->
       'karma-phantomjs-launcher'
       'karma-jasmine'
       'karma-coffee-preprocessor'
+      'karma-chrome-launcher'
     ]
 
     # enable / disable watching file and executing tests whenever any file changes

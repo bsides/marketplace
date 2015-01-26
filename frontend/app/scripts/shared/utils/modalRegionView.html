@@ -3,6 +3,7 @@
 </div>
 <div class="modal-body">
   {{ message }}
+  <span class="label label-info" ng-repeat="state in regions">{{ state }}</span>
 </div>
 <div class="modal-footer">
   <button class="btn btn-info" ng-click="modalCancel()">{{ labelCancel }}</button>
