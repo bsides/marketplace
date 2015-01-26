@@ -13,3 +13,4 @@ module/Direct/view/layout/*
 module/Application/view/application/auth/login.phtml
 .idea/
 vendor/
+data/logs/*
