@@ -525,7 +525,7 @@ module.exports = (grunt) ->
               'scripts/marketplace-templates.js'
               'styles/**/*.css'
               'styles/**/*.{css,eot,svg,ttf,woff}'
-              'scripts/**/*.{js,html}'
+              'scripts/**/*.{js,html,coffee}'
               'index.php'
               'images/**/*'
               '.htaccess'
@@ -770,6 +770,7 @@ module.exports = (grunt) ->
       'clean:public'
       'clean:layout'
       'clean:index'
+      'clean:login'
       'html2js:bootstrap'
       'html2js:marketplace'
       'html2js:multiselect'
@@ -781,6 +782,7 @@ module.exports = (grunt) ->
       'copy:index'
       'copy:favicons'
       'copy:bowercopy'
+      'copy:login'
       # 'bowercopy'
       'watch'
     ]
@@ -790,6 +792,7 @@ module.exports = (grunt) ->
       'clean:public'
       'clean:layout'
       'clean:index'
+      'clean:login'
       'html2js:bootstrap'
       'html2js:marketplace'
       'wiredep'
@@ -800,6 +803,7 @@ module.exports = (grunt) ->
       'copy:index'
       'copy:favicons'
       'copy:bowercopy'
+      'copy:login'
     ]
 
   grunt.registerTask 'server', 'DEPRECATED TASK. Use the "serve" task instead', (target) ->
