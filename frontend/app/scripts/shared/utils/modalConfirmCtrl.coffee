@@ -24,3 +24,18 @@ app.controller 'ModalRegionCtrl', ($scope, $modalInstance, title, message, regio
   $scope.modalCancel = ->
     $modalInstance.close(false)
     return
+
+app.controller 'ModalCommentCtrl', ($scope, $modalInstance, title, comment, bid, id, labelOk, labelCancel) ->
+  $scope.title = title
+  $scope.comment = comment
+  $scope.bid = bid
+  $scope.id = id
+  $scope.labelOk = labelOk
+  $scope.labelCancel = labelCancel
+
+  $scope.modalConfirm = ->
+    $modalInstance.close($scope.comment)
+    return
+  $scope.modalCancel = ->
+    $modalInstance.close(false)
+    return
