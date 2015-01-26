@@ -65,17 +65,38 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
   Results.cart().success(handleAllResults)
 
   # Comments
-  $scope.isCommenting = {}
-  $scope.toggleComment = (hash, isConfirmed, id) ->
-    # Caso seja comentário global do item, não passamos id
-    id = '' if typeof id is 'undefined'
+  $scope.newComment = (bid, index) ->
+    $scope.commentType = ->
+      if typeof index is 'undefined' then true else false
 
-    # Se for para salvar
-    if isConfirmed
-      $scope.isCommenting[hash + id] = not $scope.isCommenting[hash + id]
-    else
-      hash.comment = '' if typeof hash.comment isnt 'undefined'
-      $scope.isCommenting[hash + id] = not $scope.isCommenting[hash + id]
+    commentModal = $modal.open(
+      templateUrl: 'scripts/shared/utils/modalCommentView.html'
+      controller: 'ModalCommentCtrl'
+      size: 'sm'
+      backdrop: 'true'
+      resolve:
+        bid: ->
+          if $scope.commentType() then bid else bid.ads[index]
+        id: ->
+          if $scope.commentType() then bid.id else index
+        title: ->
+          'Observações'
+        comment: ->
+          if $scope.commentType() then bid.comment else bid.ads[index].comment
+        labelOk: ->
+          'Salvar'
+        labelCancel: ->
+          'Apagar'
+    )
+    commentModal.result.then ((result) ->
+      if result is false
+        # não faremos nada aqui
+        bid.comment = '' if $scope.commentType()
+        bid.ads[index].comment = '' unless $scope.commentType()
+      else
+        bid.comment = result if $scope.commentType()
+        bid.ads[index].comment = result unless $scope.commentType()
+    )
 
   $scope.saveComment = (hash) ->
 
@@ -145,13 +166,21 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     # Primeiro alteramos o carrinho com novos ads
     Results.updateCart($scope.getCartData).success((data) ->
       # E no seu sucesso enviamos a proposta. Esse é somente um GET.
-      Results.sendBid($scope.getCartData).success((data) ->
-        $scope.getCartData =
-          status: 200
-          message: 'Sua proposta foi enviada. Obrigado!'
-          sent: true
-          type: 'success'
-      )
+      Results.sendBid($scope.getCartData)
+        .success((data) ->
+          $scope.getCartData =
+            status: 200
+            message: 'Sua proposta foi enviada. Obrigado!'
+            sent: true
+            type: 'success'
+        )
+        .error((data) ->
+          $scope.getCartData =
+            status: 500
+            message: 'Erro ao enviar a proposta. Por favor, tente novamente.'
+            error: true
+            type: 'danger'
+        )
     )
 
   # Modal para confirmação de remoção do carrinho todo

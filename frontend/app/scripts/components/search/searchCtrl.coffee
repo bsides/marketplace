@@ -197,10 +197,6 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   $scope.toggleOrder = ->
     $scope.isOrderAsc = not $scope.isOrderAsc
 
-  # Tooltip dinâmica de acordo com a ordenação
-  $scope.orderTooltip = ->
-    if $scope.isOrderAsc then 'Trocar para ordem decrescente' else 'Trocar para ordem crescente'
-
   # Abre o modal em first load
   $scope.$watch '[searchData,canSearch]', ((newValue, oldValue) ->
     # Se o usuário puder procurar e não tiver procurado ainda

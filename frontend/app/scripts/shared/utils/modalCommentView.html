@@ -1,0 +1,10 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{ title }}</h3>
+</div>
+<div class="modal-body">
+  <textarea cols="30" rows="10" class="form-control" ng-model="comment"></textarea>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-info" ng-click="modalCancel()">{{ labelCancel }}</button>
+  <button class="btn btn-success" ng-click="modalConfirm()">{{ labelOk }}</button>
+</div>

@@ -23,7 +23,9 @@
         <div class="row">
           <div class="col-md-8"><i class="ficon ficon-doc-1"></i> Jornal: {{ bid.description }}</div>
           <div class="col-md-3">
-            <button class="btn btn-info" ng-click="toggleComment(bid.id, true)"><i class="ficon ficon-comment"></i>observações gerais</button>
+            <!-- <button class="btn btn-info" ng-click="toggleComment(bid.id, true)"><i class="ficon ficon-comment"></i>observações gerais</button> -->
+            <button class="btn btn-info" ng-click="newComment(bid)"><i class="ficon ficon-comment"></i>observações gerais</button>
+            <!--
             <div class="comment" ng-show="isCommenting[bid.id]">
               <h5>Observações</h5>
               <form action="">
@@ -34,6 +36,7 @@
                 </div>
               </form>
             </div>
+             -->
           </div>
           <div class="col-md-1 text-right"><button class="btn btn-info" ng-click="removeBid(bid)"><i class="ficon ficon-trash"></i></button></div>
         </div>
@@ -123,7 +126,9 @@
           <div class="row body" ng-repeat="ad in item.ads track by $index">
             <div class="col-md-6"><button class="btn btn-info ad-remove" ng-click="delQty(item, $index)" ng-class="{ 'disabled': $index == 0 }"><i class="ficon ficon-trash"></i></button> Anúncio {{ $index + 1 }}</div>
             <div class="col-md-1 text-center">
-              <button class="btn btn-info" ng-click="toggleComment(item.hash, true, $index)"><i class="ficon ficon-comment"></i></button>
+              <button class="btn btn-info" ng-click="newComment(item, $index)"><i class="ficon ficon-comment"></i></button>
+              <!-- <button class="btn btn-info" ng-click="toggleComment(item.hash, true, $index)"><i class="ficon ficon-comment"></i></button> -->
+              <!--
               <div class="comment" ng-show="isCommenting[item.hash + $index]">
                 <h5>Observações</h5>
                 <form action="">
@@ -134,6 +139,7 @@
                   </div>
                 </form>
               </div>
+               -->
             </div>
             <div class="col-md-3 text-center ad-date">
               <div class="input-group">
@@ -180,15 +186,6 @@
         <h2>Carrinho | Proposta</h2>
       </div>
       <div class="col-md-4">
-        <div class="cart-button disabled">
-          <span class="cart-icon">
-            <i class="ficon ficon-basket"></i>
-          </span>
-          <span class="cart-total">
-            <span class="price-label">R$</span>
-            <span class="price-value">{{ cartTotal | currency:"" }}</span>
-          </span>
-        </div>
       </div>
     </div>
   </div>
