@@ -1,25 +1,16 @@
 'use strict'
 
-app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results) ->
+app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results, Total) ->
 
   # Try to get results
   $scope.getCartData = []
 
   # Coloca o total do carrinho numa variável global
-  if typeof $rootScope.cartTotal != 'undefined'
-    $scope.cartTotal = $rootScope.cartTotal
-  else
-    $rootScope.cartTotal = 0
-    $scope.cartTotal = $rootScope.cartTotal
+  $scope.cartTotal = Total.get()
 
   # Carrega os resultados ou retorna erro caso não der
   handleAllResults = (data, status) ->
     if status == 200 and Object.keys(data).length > 0
-
-      # angular.forEach data, (value, key) ->
-      #   value.itemsfront = []
-      #   angular.forEach value.items, (val, k) ->
-      #     value.itemsfront.push(val)
 
       # Precisamos que data.ads seja um array desde já, mesmo se vazio
       angular.forEach data, (value, keys) ->
@@ -99,22 +90,18 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
         bid.ads[index].comment = result unless $scope.commentType()
     )
 
-  $scope.saveComment = (hash) ->
-
   # Date utilities
-  $scope.clearDate = ->
-    $scope.theDate = null
-
   $scope.disabledDates = (date, mode, weekdayId) ->
     if (mode is 'day' and (date.getDay() is 0 and weekdayId is 7))
       false
     else
       mode is 'day' and (date.getDay() isnt weekdayId)
 
-  do $scope.toggleMinDate = ->
+  $scope.toggleMinDate = ->
     $scope.minDate = (if $scope.minDate then null else new Date())
+  $scope.toggleMinDate()
 
-  $scope.maxDate = '2016-12-31'
+  $scope.maxDate = '31-12-2016'
 
   $scope.dateOpened = {}
   $scope.openDate = ($event, index) ->
@@ -145,9 +132,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       angular.forEach v.items, (va, ke) ->
         total = total + va.quantity * va.features.bid.value
 
-    $scope.cartTotal = total
-    $rootScope.cartTotal = total
-    total
+    $scope.cartTotal = Total.update(total)
 
   # Ads
   $scope.addQty = (obj) ->
@@ -226,7 +211,6 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     angular.forEach object.items, (value, key) ->
       Results.delete(value.hash).success((data) ->
         Results.cart().success(handleAllResults)
-        $rootScope.isAddedToCart = {}
       )
 
   $rootScope.removeBid = $scope.removeBid
@@ -234,11 +218,14 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
   # Apaga o conteúdo do carrinho
   $scope.eraseCart = ->
     Results.empty().success((data) ->
-      $rootScope.cartTotal = 0
+      $scope.cartTotal = Total.reset()
       $rootScope.isAddedToCart = {}
       $rootScope.searchData = []
     )
 
+  do getAddedToCart = ($rootScope) ->
+    $rootScope.$on 'rootScope:emit', (event, data) ->
+      $rootScope.isAddedToCart = data
 
   # Regions
   $scope.checkRegions = (data) ->
@@ -268,3 +255,92 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       if isConfirmed
         $log.info 'fechou'
     )
+
+  # Data coming from server
+  # $scope.bidData = [
+  #   {
+  #     id: 231
+  #     name: 'Folha de SP'
+  #     comment: ''
+  #     items: [
+  #       id: 7
+  #       category: 'Destaques'
+  #       determination: 'Capa'
+  #       format: 'Página Inteira'
+  #       color: 'Cromia'
+  #       price: 12012.00
+  #       weekdays: ['Seg', 'Ter', 'Dom']
+  #       quantity: 1
+  #       comment: ''
+  #     ]
+  #   }
+  #   {
+  #     id: 32
+  #     name: 'O Globo'
+  #     comment: ''
+  #     items: [
+  #       {
+  #         id: 438
+  #         category: 'Esportes'
+  #         determination: 'Padrão'
+  #         format: 'Meia página'
+  #         color: 'Cromia'
+  #         price: 11030.50
+  #         weekdays: ['Qua']
+  #         quantity: 1
+  #         comment: ''
+  #       }
+  #       {
+  #         id: 43
+  #         category: 'Finanças'
+  #         determination: 'Padrão'
+  #         format: 'Rodapé'
+  #         color: 'Cromia'
+  #         price: 1000.00
+  #         weekdays: ['Sáb']
+  #         quantity: 1
+  #         comment: ''
+  #       }
+  #       {
+  #         id: 4
+  #         category: 'Cultura'
+  #         determination: 'Capa'
+  #         format: 'Meia página'
+  #         color: 'PB'
+  #         price: 56000.53
+  #         weekdays: ['Sáb', 'Dom']
+  #         quantity: 1
+  #         comment: ''
+  #       }
+  #     ]
+  #   }
+  #   {
+  #     id: 3213
+  #     name: 'Estadão'
+  #     comment: ''
+  #     items: [
+  #       {
+  #         id: 9
+  #         category: 'Esportes'
+  #         determination: 'Padrão'
+  #         format: 'Metade vertical'
+  #         color: 'PB'
+  #         price: 11030.50
+  #         weekdays: ['Qua']
+  #         quantity: 1
+  #         comment: ''
+  #       }
+  #       {
+  #         id: 10
+  #         category: 'Política'
+  #         determination: 'Padrão'
+  #         format: 'Página inteira'
+  #         color: 'Cromia'
+  #         price: 45000.50
+  #         weekdays: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex']
+  #         quantity: 1
+  #         comment: ''
+  #       }
+  #     ]
+  #   }
+  # ]

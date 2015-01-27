@@ -155,6 +155,47 @@
     }
   }
 }
+// Datepicker
+.mkp-datepicker {
+
+  .month-secondary {
+    button {
+      background: $white;
+      color: $brand-success;
+      font-weight: bold;
+    }
+    button[disabled] {
+      background: $lightest-gray;
+      color: $light-gray;
+      font-weight: normal;
+    }
+  }
+  .month-selectable {
+    button {
+      background: $white;
+      color: $brand-success;
+      font-weight: bold;
+    }
+    button[disabled] {
+      background: $white-gray;
+      color: $light-gray;
+      font-weight: normal;
+    }
+  }
+  td:not(.month-selectable):not(.month-secondary) {
+    button[disabled] {
+      background: $white-gray;
+      color: $light-gray;
+      font-weight: normal;
+    }
+    button {
+      background: $white;
+      color: $brand-success;
+      font-weight: bold;
+    }
+  }
+}
+
 .value-purchase {
   text-align: right;
   margin-top: 30px;

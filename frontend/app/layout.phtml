@@ -44,7 +44,7 @@
     <header ng-include="'scripts/shared/header/headerView.html'"></header>
     <div ng-include="'scripts/shared/nav/navView.html'"></div>
 
-    <div ng-view=""></div>
+    <div ng-view="" ng-cloak></div>
 
     <footer class="footer" ng-include="'scripts/shared/footer/footerView.html'"></footer>
 
@@ -101,6 +101,7 @@
     <script src="scripts/components/results/resultsCtrl.js"></script>
     <script src="scripts/components/results/resultsServices.js"></script>
     <script src="scripts/components/filter/filterCtrl.js"></script>
+    <script src="scripts/components/search/searchServices.js"></script>
     <script src="scripts/components/search/searchCtrl.js"></script>
     <script src="scripts/components/purchases/purchasesCtrl.js"></script>
     <script src="scripts/components/bids/bidsCtrl.js"></script>

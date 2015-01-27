@@ -33,7 +33,7 @@
  -->
         <span class="cart-total">
           <span class="price-label">R$</span>
-          <span class="price-value" ng-model="cartTotal">{{ cartTotal | currency:"" }}</span>
+          <span class="price-value" ng-model="cartTotal" ng-bind="cartTotal | currency:''"></span>
         </span>
       </div>
     </div>
