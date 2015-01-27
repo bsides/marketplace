@@ -227,6 +227,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     angular.forEach object.items, (value, key) ->
       Results.delete(value.hash).success((data) ->
         Results.cart().success(handleAllResults)
+        $rootScope.isAddedToCart = {}
       )
 
   $rootScope.removeBid = $scope.removeBid
@@ -234,9 +235,11 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
   # Apaga o conteúdo do carrinho
   $scope.eraseCart = ->
     Results.empty().success((data) ->
-      data
       $rootScope.cartTotal = 0
+      $rootScope.isAddedToCart = {}
+      $rootScope.searchData = []
     )
+
 
   # Regions
   $scope.checkRegions = (data) ->

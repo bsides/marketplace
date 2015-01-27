@@ -149,6 +149,11 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     Results.empty().success((data) ->
       data
       $rootScope.cartTotal = 0
+      $scope.searchData = []
+      $rootScope.searchData = []
+      $scope.isAddingToCart = {}
+      $scope.isAddedToCart = {}
+      $rootScope.isAddedToCart = {}
     )
 
   # Fix para selectbox de advertiser
@@ -236,8 +241,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
           'Cancelar'
     )
     regionModal.result.then ((isConfirmed) ->
-      if isConfirmed
-        $log.info 'fechou'
+      # if isConfirmed
+      #   $log.info 'fechou'
     )
 
   # Verifica se já foi adicionado
