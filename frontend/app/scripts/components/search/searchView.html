@@ -52,7 +52,7 @@
       </button>
     </div>
   </div>
-  <p ng-show="failedFilters" class="bg-warning msg-error">Falha ao carregar os filtros para a busca de ofertas.</p>
+  <alert ng-show="failedFilters" type="{{ msgType }}" alert-dismissable="false">{{ msg }}</alert>
 </div>
 
 <div ng-include="results"></div>

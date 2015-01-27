@@ -116,6 +116,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       $scope.searchData = data
     ).error((data) ->
       $scope.faliedItems = true
+      $scope.msg = "Falha ao carregar a lista de ofertas."
+      $scope.msgType = "danger"
     )
 
   # Modal para confirmação de mudança de advertiser
@@ -186,6 +188,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       $scope.failedFilters = false
     ), (data) ->
       $scope.failedFilters = true
+      $scope.msg = "Falha ao carregar os filtros para a busca de ofertas."
+      $scope.msgType = "danger"
 
   else
     $scope.advertisers = $rootScope.listingAllData[0].data
