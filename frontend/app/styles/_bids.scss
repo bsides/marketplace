@@ -32,6 +32,11 @@
 
   .panel-heading {
     background: #ffffff;
+    padding: 10px;
+
+    & .col-md-8 {
+      line-height: 2;
+    }
   }
   .panel-body {
     padding: 10px;
@@ -46,7 +51,7 @@
 
     .resume {
       border: 2px solid #488fbe;
-      margin: 10px auto 20px;
+      margin: 0 auto 20px;
       padding: 0;
 
       table {

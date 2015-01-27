@@ -59,33 +59,3 @@ app.factory 'Cart', ->
 
   # Métodos utilitários
 
-
-
-app.factory 'DateUtils', ->
-
-  minimum: null
-  maximum: '2016-12-31'
-  formats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
-  format = @formats[0]
-  opened: {}
-  options:
-    format: 'dd-MM-yyyy'
-    showWeeks: false
-    onClose: (e) ->
-    datepickerPopupConfig:
-      showButtonBar: false
-
-  filterByWeekday: (date, mode, weekdayId) ->
-    if (mode is 'day' and (date.getDay() is 0 and weekdayId is 7))
-      false
-    else
-      mode is 'day' and (date.getDay() isnt weekdayId)
-
-  toggleMinDate: ->
-    @minDate = (if @minDate then null else new Date())
-
-  openDate: ($event, index) ->
-    $event.preventDefault()
-    $event.stopPropagation()
-    @opened[index] = true
-

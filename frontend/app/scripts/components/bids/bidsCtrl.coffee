@@ -132,6 +132,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       angular.forEach v.items, (va, ke) ->
         total = total + va.quantity * va.features.bid.value
 
+    false if total is Total.get()
     $scope.cartTotal = Total.update(total)
 
   # Ads
