@@ -173,3 +173,17 @@
   text-align: right;
   margin: 60px 0;
 }
+.dropdown-menu:focus,
+.dropdown-menu > li:focus,
+.dropdown-menu > li > div:focus,
+.dropdown-menu > li > div > table:focus {
+  outline: none;
+}
+body > ul.dropdown-menu {
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .modal-comment .modal-sm {
+    width: 420px;
+  }
+}

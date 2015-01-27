@@ -143,7 +143,7 @@
             </div>
             <div class="col-md-3 text-center ad-date">
               <div class="input-group">
-                <input type="text" class="form-control" datepicker-popup="{{ dateFormat }}" ng-model="ad.date" is-open="dateOpened[item.hash + $index]" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabledDates(date, mode, item.features.week_day.id)" ng-required="true" close-text="Fechar" clear-text="Limpar" current-text="Hoje"datepicker-append-to-body="true" />
+                <input type="text" class="form-control" datepicker-popup="{{ dateFormat }}" ng-model="ad.date" is-open="dateOpened[item.hash + $index]" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabledDates(date, mode, item.features.week_day.id)" ng-required="true" close-text="Fechar" clear-text="Limpar" current-text="Hoje" show-button-bar="false" datepicker-append-to-body="true" />
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-default" ng-click="openDate($event, item.hash + $index)"><i class="ficon ficon-calendar"></i></button>
                 </span>

@@ -27,7 +27,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
           if newValue.ads is null
             newValue.ads = [
               comment: ''
-              date: $filter('date') new Date(), 'dd-MM-yyyy'
+              date: '' #$filter('date') new Date(), 'dd-MM-yyyy'
               price: parseFloat(newValue.features.bid.value).toFixed(2)
             ]
             newValue.quantity = 1
@@ -74,6 +74,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       controller: 'ModalCommentCtrl'
       size: 'sm'
       backdrop: 'true'
+      windowClass: 'modal-comment'
       resolve:
         bid: ->
           if $scope.commentType() then bid else bid.ads[index]
@@ -105,11 +106,16 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     $scope.theDate = null
 
   $scope.disabledDates = (date, mode, weekdayId) ->
-    mode is "day" and (date.getDay() isnt weekdayId)
+    if (mode is 'day' and (date.getDay() is 0 and weekdayId is 7))
+      false
+    else
+      mode is 'day' and (date.getDay() isnt weekdayId)
 
   $scope.toggleMinDate = ->
     $scope.minDate = (if $scope.minDate then null else new Date())
   $scope.toggleMinDate()
+
+  $scope.maxDate = '2016-12-31'
 
   $scope.dateOpened = {}
   $scope.openDate = ($event, index) ->
@@ -119,7 +125,10 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
 
   $scope.dateOptions =
     format: 'dd-MM-yyyy'
+    showWeeks: false
     onClose: (e) ->
+    datepickerPopupConfig:
+      showButtonBar: false
 
   $scope.dateFormats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
   $scope.dateFormat = $scope.dateFormats[0]
@@ -146,7 +155,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     if obj.quantity < 10
       obj.ads.push(
         comment: ''
-        date: $filter('date') new Date(), 'dd-MM-yyyy'
+        date: '' #$filter('date') new Date(), 'dd-MM-yyyy'
         price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
