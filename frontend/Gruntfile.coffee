@@ -695,6 +695,7 @@ module.exports = (grunt) ->
         options:
           destPrefix: '<%= setupPaths.public %>/bower_components'
         files:
+          'pace/pace.js': 'pace/pace.js'
           'es5-shim/es5-shim.js': 'es5-shim/es5-shim.js'
           'json3/lib/json3.js': 'json3/lib/json3.js'
           'jquery/dist/jquery.js': 'jquery/dist/jquery.js'
