@@ -48,7 +48,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   Results.cart().success(handleCartResults)
 
   # Formatador de resultado
-  $scope.formatResults = (counter) ->
+  $scope.formatResults = (data) ->
+    counter = data.length unless typeof data is 'undefined'
     if counter > 1
       $scope.resultLabel = counter + ' resultados'
     else if counter == 1

@@ -150,7 +150,12 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
         price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
-    Results.updateCart($scope.getCartData).success(->)
+    Results.updateCart($scope.getCartData)
+      .success((data) ->
+        # No sucesso, continua
+      )
+      .error((data) ->
+      )
 
   $scope.delQty = (obj, index) ->
     if obj.quantity > 1
