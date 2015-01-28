@@ -18,7 +18,7 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   $scope.results = 'scripts/components/results/resultsView.html'
   $scope.canSearch = false
   $scope.failedFilters = false
-  $scope.faliedItems = false
+  $scope.failedItems = false
 
   # Variáveis de dados globais (dados persistentes entre páginas)
 
@@ -115,7 +115,7 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       $rootScope.searchData = data
       $scope.searchData = data
     ).error((data) ->
-      $scope.faliedItems = true
+      $scope.failedItems = true
       $scope.msg = "Falha ao carregar a lista de ofertas."
       $scope.msgType = "danger"
     )
