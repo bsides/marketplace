@@ -95,17 +95,6 @@ class ListController extends AbstractActionController
     /**
      * @return JsonModel
      */
-    public function advertiserAction()
-    {
-        $service = $this->getServiceLocator()->get('direct.common.advertiser');
-        $id = $this->params('id', null);
-
-        return new JsonModel($service->fetch($id)['data']);
-    }
-
-    /**
-     * @return JsonModel
-     */
     public function regionAction()
     {
         $service = $this->getServiceLocator()->get('direct.common.geo.state');

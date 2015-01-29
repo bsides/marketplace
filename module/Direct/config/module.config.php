@@ -67,6 +67,20 @@ return array(
                             ),
                         ),
                     ),
+                    'advertiser' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/advertiser[/:action][/:id]',
+                            'constraints' => array(
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'     => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Direct\Controller\Advertiser',
+                                'action'     => 'list',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -111,7 +125,8 @@ return array(
             'Direct\Controller\List' => 'Direct\Controller\ListController',
             'Direct\Controller\Item' => 'Direct\Controller\ItemController',
             'Direct\Controller\Deal' => 'Direct\Controller\DealController',
-            'Direct\Controller\UltimasCompras' => 'Direct\Controller\UltimasComprasController'
+            'Direct\Controller\UltimasCompras' => 'Direct\Controller\UltimasComprasController',
+            'Direct\Controller\Advertiser' => 'Direct\Controller\AdvertiserController'
         ),
     ),
     'view_manager' => array(

@@ -14,6 +14,8 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Application\ErrorHandling as ApplicationErrorHandling;
 use Zend\Log\Writer\Stream as LogWriterStream;
+use Zend\Session\Config\SessionConfig;
+use Zend\Session\SessionManager;
 
 class Module
 {
@@ -39,6 +41,8 @@ class Module
         $moduleRouteListener->attach($em);
         $authService = $sm->get('auth.service');
         $this->restrictLogin($e, $authService, ['login'], 'login');
+
+
     }
 
     public function getConfig()
