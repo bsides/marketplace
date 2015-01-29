@@ -75,7 +75,7 @@
           background-color: #e6e7e8;
         }
         tbody td {
-          background-color: #ffffff;
+          background-color: $white;
           border-top: 4px solid #f1f3f4;
         }
       }
@@ -86,9 +86,8 @@
 .prices {
   background-color: #e1faed;
   margin-left: -15px;
-  padding: 5px;
+  padding: 5px 8px;
   position: relative;
-  top: -2px;
 
   input {
     background: none;

@@ -2,6 +2,9 @@
 
 app.controller 'PurchasesCtrl', ($scope) ->
 
+  # Começamos com as caixas fechadas
+  $scope.isCollapsed = true
+
   $scope.advertisers =  [
     {
       name: 'Cdv'
