@@ -21,7 +21,8 @@ app.controller 'FilterCtrl', (
   weekdays,
   determinations,
   regions,
-  makeFilter
+  makeFilter,
+  modalSelectedAdvertiser
   ) ->
 
   $scope.filterSelected = 'categories'
@@ -33,9 +34,11 @@ app.controller 'FilterCtrl', (
   $scope.weekdays = weekdays
   $scope.determinations = determinations
   $scope.regions = regions
+  $scope.modalSelectedAdvertiser = modalSelectedAdvertiser
+  $scope.isAdvertiserSelectable = true if $scope.advertisers.length > 1
 
   $scope.ok = ->
-    makeFilter()
+    makeFilter($scope.modalSelectedAdvertiser)
     $scope.closeModal()
     return
 

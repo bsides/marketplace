@@ -2,10 +2,15 @@
   <div class="panel panel-default">
     <div class="panel-body form-inline">
       <strong>Anunciante</strong>
+        <select ng-model="modalSelectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control filter-advertiser" ng-class="{ 'disabled': !isAdvertiserSelectable }">
+          <option style="display:none" value="">Selecione um anunciante</option>
+        </select>
+<!--
       <select name="advertisers" ng-model="isAdvertiser" class="form-control">
         <option value="">Selecione um Anunciante</option>
         <option ng-repeat="advertiser in advertisers | orderBy:'description'" value="{{ advertiser.id }}">{{ advertiser.description }}</option>
       </select>
+ -->
     </div>
   </div>
   <div class="panel panel-default wp-search">

@@ -83,11 +83,17 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
           $scope.makeFilter
         superSearchString: ->
           $scope.superSearchString
+        modalSelectedAdvertiser: ->
+          $scope.selectedAdvertiser
     )
 
-  $scope.makeFilter = ->
+  $scope.makeFilter = (advertiserSelected) ->
     $scope.superSearchString = ''
     $scope.filterData = []
+    $scope.isAdvertiserSelectable = true if $scope.advertisers.length > 1
+    $scope.willOpenAdvertiserModal = advertiserSelected
+    $scope.selectedAdvertiser = advertiserSelected
+
     angular.forEach $scope.categories, (value, key) ->
       if value.ticked
         $scope.superSearchString += '&category_id[]=' + value.id
@@ -121,7 +127,7 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
 
   # Modal para confirmação de mudança de advertiser
   $scope.willOpenAdvertiserModal = {}
-  $scope.$watch 'selectedAdvertiser', (newValue, oldValue) ->
+  watchAdvertiser = $scope.$watch 'selectedAdvertiser', (newValue, oldValue) ->
     if (newValue != $scope.willOpenAdvertiserModal) and (newValue != oldValue)
       # A model do advertiser selecionado
       confirmModal = $modal.open(
@@ -190,6 +196,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       # You can search now
       $scope.canSearch = true
       $scope.failedFilters = false
+
+      $scope.isAdvertiserSelectable = true if $scope.advertisers.length > 1
     ), (data) ->
       $scope.failedFilters = true
       $scope.msg = "Falha ao carregar os filtros para a busca de ofertas."
@@ -203,6 +211,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     $scope.regions = $rootScope.listingAllData[4].data
     $scope.canSearch = true
     $scope.failedFilters = false
+    $scope.isAdvertiserSelectable = true if $scope.advertisers.length > 1
+
   # Ordenação de resultado
 
   # Modo de Visualização
@@ -303,4 +313,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   #     found = $filter('filter')($scope.searchData, {id: id}, true)
   #     if found.length
   #       console.log JSON.stringify(found[0])
+
+
+
+  # Lógica para Advertiser
 
