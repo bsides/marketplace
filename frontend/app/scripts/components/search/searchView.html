@@ -47,11 +47,12 @@
         <span class="label label-info" ng-repeat="criteria in filterData | limitTo:6">{{ criteria.description }}</span>&nbsp;
         <span ng-hide="filterData.length">Sem resultados, por favor refaça a busca</span>
       </div>
-      <button type="button" class="btn btn-primary pull-right" ng-click="newSearch()" ng-class="{ 'disabled': !canSearch }">
-        Nova busca <i class="ficon" ng-class="{ 'ficon-down-open': canSearch, 'ficon-arrows-ccw ficon-flip-horizontal ficon-spin': !canSearch }"></i>
+      <button type="button" class="btn pull-right" ng-click="newSearch()" ng-class="{ 'disabled': !canSearch, 'btn-warning': failedFilters, 'btn-primary': !failedFilters }">
+        Nova busca <i class="ficon" ng-hide="failedFilters" ng-class="{ 'ficon-down-open': canSearch, 'ficon-arrows-ccw ficon-flip-horizontal ficon-spin': !canSearch }"></i>
       </button>
     </div>
   </div>
+  <alert ng-show="failedFilters" type="{{ msgType }}" alert-dismissable="false">{{ msg }}</alert>
 </div>
 
 <div ng-include="results"></div>

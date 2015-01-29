@@ -73,6 +73,8 @@
       </div>
 
       <div class="search-results" ng-class="viewMode">
+        <alert ng-show="failedItems" type="{{ msgType }}" alert-dismissable="false">{{ msg }}</alert>
+
         <div class="row" ng-repeat="result in (searchData.length / 3 | returnArray)">
           <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }" ng-repeat="result in searchData.slice(3 * $index, 3 * $index + 3) | orderBy:selectedOrder:!isOrderAsc | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor">
             <div class="panel panel-default">
