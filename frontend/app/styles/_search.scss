@@ -9,7 +9,8 @@
     &:focus {
       outline: none;
     }
-    &:hover {
+    &:hover:not:disabled,
+    &:hover:not(.disabled) {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     &.disabled,
@@ -79,7 +80,7 @@ h2 {
 }
 // Advertiser dropdown
 .advertiser-toggle {
-  background: $white;
+  // background: $white;
   padding: 9px 16px;
   border-radius: $border-radius-base;
   display: inline-block;

@@ -1,25 +1,16 @@
 'use strict'
 
-app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results) ->
+app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStorageService, Results, Total) ->
 
   # Try to get results
   $scope.getCartData = []
 
   # Coloca o total do carrinho numa variável global
-  if typeof $rootScope.cartTotal != 'undefined'
-    $scope.cartTotal = $rootScope.cartTotal
-  else
-    $rootScope.cartTotal = 0
-    $scope.cartTotal = $rootScope.cartTotal
+  $scope.cartTotal = Total.get()
 
   # Carrega os resultados ou retorna erro caso não der
   handleAllResults = (data, status) ->
     if status == 200 and Object.keys(data).length > 0
-
-      # angular.forEach data, (value, key) ->
-      #   value.itemsfront = []
-      #   angular.forEach value.items, (val, k) ->
-      #     value.itemsfront.push(val)
 
       # Precisamos que data.ads seja um array desde já, mesmo se vazio
       angular.forEach data, (value, keys) ->
@@ -27,7 +18,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
           if newValue.ads is null
             newValue.ads = [
               comment: ''
-              date: $filter('date') new Date(), 'dd-MM-yyyy'
+              date: '' #$filter('date') new Date(), 'dd-MM-yyyy'
               price: parseFloat(newValue.features.bid.value).toFixed(2)
             ]
             newValue.quantity = 1
@@ -74,6 +65,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       controller: 'ModalCommentCtrl'
       size: 'sm'
       backdrop: 'true'
+      windowClass: 'modal-comment'
       resolve:
         bid: ->
           if $scope.commentType() then bid else bid.ads[index]
@@ -98,18 +90,18 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
         bid.ads[index].comment = result unless $scope.commentType()
     )
 
-  $scope.saveComment = (hash) ->
-
   # Date utilities
-  $scope.clearDate = ->
-    $scope.theDate = null
-
   $scope.disabledDates = (date, mode, weekdayId) ->
-    mode is "day" and (date.getDay() isnt weekdayId)
+    if (mode is 'day' and (date.getDay() is 0 and weekdayId is 7))
+      false
+    else
+      mode is 'day' and (date.getDay() isnt weekdayId)
 
   $scope.toggleMinDate = ->
     $scope.minDate = (if $scope.minDate then null else new Date())
   $scope.toggleMinDate()
+
+  $scope.maxDate = '31-12-2016'
 
   $scope.dateOpened = {}
   $scope.openDate = ($event, index) ->
@@ -119,7 +111,10 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
 
   $scope.dateOptions =
     format: 'dd-MM-yyyy'
+    showWeeks: false
     onClose: (e) ->
+    datepickerPopupConfig:
+      showButtonBar: false
 
   $scope.dateFormats = ['dd-MM-yyyy', 'dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate']
   $scope.dateFormat = $scope.dateFormats[0]
@@ -137,20 +132,24 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
       angular.forEach v.items, (va, ke) ->
         total = total + va.quantity * va.features.bid.value
 
-    $scope.cartTotal = total
-    $rootScope.cartTotal = total
-    total
+    false if total is Total.get()
+    $scope.cartTotal = Total.update(total)
 
   # Ads
   $scope.addQty = (obj) ->
     if obj.quantity < 10
       obj.ads.push(
         comment: ''
-        date: $filter('date') new Date(), 'dd-MM-yyyy'
+        date: '' #$filter('date') new Date(), 'dd-MM-yyyy'
         price: parseFloat(obj.features.bid.value).toFixed(2)
       )
       obj.quantity = obj.quantity + 1
-    Results.updateCart($scope.getCartData).success(->)
+    Results.updateCart($scope.getCartData)
+      .success((data) ->
+        # No sucesso, continua
+      )
+      .error((data) ->
+      )
 
   $scope.delQty = (obj, index) ->
     if obj.quantity > 1
@@ -220,9 +219,14 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
   # Apaga o conteúdo do carrinho
   $scope.eraseCart = ->
     Results.empty().success((data) ->
-      data
-      $rootScope.cartTotal = 0
+      $scope.cartTotal = Total.reset()
+      $rootScope.isAddedToCart = {}
+      $rootScope.searchData = []
     )
+
+  do getAddedToCart = ($rootScope) ->
+    $rootScope.$on 'rootScope:emit', (event, data) ->
+      $rootScope.isAddedToCart = data
 
   # Regions
   $scope.checkRegions = (data) ->

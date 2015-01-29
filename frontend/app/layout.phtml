@@ -14,6 +14,9 @@
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
+    <!-- build:css(.tmp) styles/loader.css -->
+    <link rel="stylesheet" href="styles/loader.css">
+    <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/app.css">
     <link rel="stylesheet" href="styles/direct-icons.css">
@@ -44,7 +47,7 @@
     <header ng-include="'scripts/shared/header/headerView.html'"></header>
     <div ng-include="'scripts/shared/nav/navView.html'"></div>
 
-    <div ng-view=""></div>
+    <div ng-view="" ng-cloak></div>
 
     <footer class="footer" ng-include="'scripts/shared/footer/footerView.html'"></footer>
 
@@ -70,6 +73,7 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/pace/pace.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -101,6 +105,7 @@
     <script src="scripts/components/results/resultsCtrl.js"></script>
     <script src="scripts/components/results/resultsServices.js"></script>
     <script src="scripts/components/filter/filterCtrl.js"></script>
+    <script src="scripts/components/search/searchServices.js"></script>
     <script src="scripts/components/search/searchCtrl.js"></script>
     <script src="scripts/components/purchases/purchasesCtrl.js"></script>
     <script src="scripts/components/bids/bidsCtrl.js"></script>

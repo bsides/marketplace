@@ -11,12 +11,16 @@
 
 'use strict'
 
-app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout, $q, $log, Results) ->
+app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout, $q, $log, Results, Total) ->
 # TODO: rows with ng-repeat
 # http://angularjs4u.com/filters/angularjs-template-divs-row/
 
   $scope.results = 'scripts/components/results/resultsView.html'
   $scope.canSearch = false
+
+  # O que temos no carrinho hoje?
+  $scope.cartTotal = Total.get()
+
   $scope.failedFilters = false
   $scope.failedItems = false
 
@@ -34,12 +38,6 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   else
     $scope.filterData = $rootScope.filterData
 
-  # Coloca o total do carrinho numa variável global
-  if typeof $rootScope.cartTotal != 'undefined'
-    $rootScope.cartTotal
-  else
-    $rootScope.cartTotal = 0
-
   $scope.cartResults = []
   handleCartResults = (data, status) ->
     if status == 200
@@ -50,7 +48,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   Results.cart().success(handleCartResults)
 
   # Formatador de resultado
-  $scope.formatResults = (counter) ->
+  $scope.formatResults = (data) ->
+    counter = data.length unless typeof data is 'undefined'
     if counter > 1
       $scope.resultLabel = counter + ' resultados'
     else if counter == 1
@@ -152,8 +151,13 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   # Apaga o conteúdo do carrinho
   $scope.eraseCart = ->
     Results.empty().success((data) ->
-      data
-      $rootScope.cartTotal = 0
+      Total.reset()
+      $scope.cartTotal = Total.get()
+      $scope.searchData = []
+      $rootScope.searchData = []
+      $scope.isAddingToCart = {}
+      $scope.isAddedToCart = {}
+      $rootScope.isAddedToCart = {}
     )
 
   # Fix para selectbox de advertiser
@@ -248,8 +252,8 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
           'Cancelar'
     )
     regionModal.result.then ((isConfirmed) ->
-      if isConfirmed
-        $log.info 'fechou'
+      # if isConfirmed
+      #   $log.info 'fechou'
     )
 
   # Verifica se já foi adicionado
@@ -264,32 +268,14 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   # Adicionar
   # TODO: Refatorar
   $scope.addToCart = (item, index) ->
-    # newItem = {}
     # Ações ao adicionar:
     # 1 - Loading no botão, para preparar para a chamada ajax
     # 2 - envia dados para o carrinho
     # 3 - no sucesso, desabilita o botão de adicionar, adiciona ícone de "adicionado" e desliga loading
     # 4 - acrescenta quantidade e atualiza valor ao carrinho
 
-    # adicionamos manualmente a quantidade 1 caso quantity não exista
-    # if item.quantity
-    #   newItem.quantity = item.quantity
-    # else
-    #   newItem.quantity = 1
-
     # 1 - Loading no botão, para preparar para a chamada ajax
     $scope.isAddingToCart[index] = true
-
-    # # Prepara item para envio
-    # newItem.comment = ''
-    # newItem.price = item.bid.value
-    # newItem.ads = []
-    # newItem.ads[0] =
-    #   comment: ''
-    #   date: ''
-    #   price: item.bid.value
-
-    # newItem.features = item
 
     # 2 - envia dados para o carrinho
     Results.add(item.hash).success((data) ->
@@ -298,24 +284,23 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       $scope.isAddedToCart[index] = true
       $scope.isAddingToCart[index] = false
       # 4 - acrescenta quantidade e atualiza valor ao carrinho
-      $rootScope.cartTotal = parseFloat($rootScope.cartTotal) + parseFloat(item.bid.value)
+      $scope.cartTotal = Total.add(parseFloat(item.bid.value))
     ).error((data) ->
-      # console.log data
+      # TODO: tratar erro
     )
 
   # Remover
   $scope.removeFromCart = (bidId) ->
-    Results.delete(bidId).success((data) ->
-      data
-    )
+    Results.delete(bidId)
+      .success((data) ->
+      )
+      .error((data) ->
+        # TODO: tratar erro
+      )
 
   # $scope.cart =
   #   add: (id) ->
   #     found = $filter('filter')($scope.searchData, {id: id}, true)
   #     if found.length
   #       console.log JSON.stringify(found[0])
-
-  # $scope.testando = (item) ->
-  #   console.log item
-
 
