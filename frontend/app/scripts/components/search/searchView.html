@@ -17,7 +17,8 @@
           </ul>
         </div>
         -->
-        <select ng-model="selectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control select-advertiser" ng-click="checkAdvertiser()">
+        <select ng-model="selectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control select-advertiser" ng-click="checkAdvertiser()" ng-init="selectedAdvertiser = advertiser[0]">
+          <option style="display:none" value="">Selecione um anunciante</option>
         </select>
       </div>
     </div>

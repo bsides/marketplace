@@ -9,47 +9,47 @@
 <div class="container filters">
   <div class="row">
     <div class="col-md-9">
-      <div class="row whitey">
-        <!-- <div class="col-md-4"> -->
-          <div class="filter-box">
-            <span class="filter-label fort search-labels">Vendas</span>
-            <select class="form-control whitey-sel" name="">
-              <option>Janeiro</option>
-              <option>Fevereiro</option>
-              <option>Março</option>
-              <option>Abril</option>
-              <option>Maio</option>
-              <option>Junho</option>
-              <option>Julho</option>
-              <option>Agosto</option>
-              <option>Setembro</option>
-              <option>outubro</option>
-              <option>Novembro</option>
-              <option>Dezembro</option>
-            </select>
-             <select class="form-control whitey-sel" name="" ng-model="selectedYear">
-              <option value="2014">2014</option>
-              <option value="2015">2015</option>
-            </select>
-          </div>
-          <div class="filter-box">
-            <span class="filter-label">Jornal</span>
-            <select class="form-control whitey-sel" name="" ng-model="selectedNewspaper">
-              <option value="">Todos</option>
-              <option ng-repeat="newspaper in newspapers | orderBy:'name'" value="{{newspaper.id}}">{{newspaper.name}}</option>
-            </select>
-          </div>
-          <div class="filter-box">
-            <span class="filter-label">Anunciante</span>
-            <select class="form-control whitey-sel" name="" ng-model="selectedAdvertiser">
-              <option value="">Todos</option>
-              <option ng-repeat="adv in advertisers | orderBy:'name'" value="{{adv.id}}">{{adv.name}}</option>
-            </select>
-          </div>
+      <div class="whitey">
+        <div class="filter-box">
+          <span class="filter-label fort search-labels">Vendas</span>
+          <select class="form-control whitey-sel" name="">
+            <option>Janeiro</option>
+            <option>Fevereiro</option>
+            <option>Março</option>
+            <option>Abril</option>
+            <option>Maio</option>
+            <option>Junho</option>
+            <option>Julho</option>
+            <option>Agosto</option>
+            <option>Setembro</option>
+            <option>outubro</option>
+            <option>Novembro</option>
+            <option>Dezembro</option>
+          </select>
+           <select class="form-control whitey-sel" name="" ng-model="selectedYear" ng-init="selectedYear = ''">
+            <option value="">Todos</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+          </select>
+        </div>
+        <div class="filter-box">
+          <span class="filter-label">Jornal</span>
+          <select class="form-control whitey-sel" name="" ng-model="selectedNewspaper">
+            <option value="">Todos</option>
+            <option ng-repeat="newspaper in newspapers | orderBy:'name'" value="{{newspaper.id}}">{{newspaper.name}}</option>
+          </select>
+        </div>
+        <div class="filter-box">
+          <span class="filter-label">Anunciante</span>
+          <select class="form-control whitey-sel" name="" ng-model="selectedAdvertiser">
+            <option value="">Todos</option>
+            <option ng-repeat="adv in advertisers | orderBy:'name'" value="{{adv.id}}">{{adv.name}}</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="row whitey">
+      <div class="whitey">
         <div class="filter-box" style="padding: 10px">
           <span class="filter-label">total<br>mensal</span>
           <span  class="prices">
@@ -66,7 +66,7 @@
     Informações acumuladas até o dia {{ infoDate }} <button class="btn btn-info"><i class="ficon ficon-file-pdf"></i></button>
   </div>
 
-  <div class="panel panel-default" ng-repeat="result in purchaseData | orderBy:'id' | filter:selectedYear | filterAdvertiser:selectedAdvertiser">
+  <div class="panel panel-default" ng-repeat="result in purchaseData | orderBy:'id' | filterYear:selectedYear | filterAdvertiser:selectedAdvertiser">
     <div class="panel-body" ng-click="isCollapsed = !isCollapsed">
       <div class="row line-info-purchase">
         <div class="col-md-6 description">

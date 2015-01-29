@@ -7,12 +7,13 @@
       padding:10px 0;
 
       &:first-child {
-        select {
-          min-width: auto !important;
+        select + select {
+          width: auto;
+          min-width: inherit;
         }
       }
       select {
-        min-width: 170px;
+        min-width: 150px;
         padding: 4px 5px;
       }
 
@@ -23,7 +24,8 @@
       margin-left: 10px;
 
       &.search-labels {
-        min-width: auto;
+        width: auto;
+        min-width: inherit;
       }
     }
   }
@@ -45,10 +47,17 @@
   }
   .line-info-purchase {
     padding: 10px;
+    cursor: pointer;
 
     .value {
       text-align: right;
     }
+  }
+  .panel-body:focus {
+    outline: none;
+  }
+  .panel {
+    margin-bottom: 10px;
   }
   .detail-purchase {
     /*display: none;*/
