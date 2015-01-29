@@ -365,6 +365,7 @@ module.exports = (grunt) ->
           relativeAssets: false
           assetCacheBuster: false
           raw: 'Sass::Script::Number.precision = 10\n'
+          sourcemap: true
 
       build:
         options:
