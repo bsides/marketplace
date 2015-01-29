@@ -74,6 +74,7 @@
       </div>
 
       <div class="search-results" ng-class="viewMode">
+        <alert ng-show="failedItems" type="{{ msgType }}" alert-dismissable="false">{{ msg }}</alert>
         <div ng-repeat-start="result in resultCounter = (searchData | filterWeek:selectedWeekday | filterPriceBetween:selectedPriceRange | filterColor:selectedColor | orderBy:selectedOrder:!isOrderAsc)">
 
           <div ng-class="{ 'col-md-4': viewMode == 'view-regular', 'col-md-12': viewMode == 'view-compact' }">

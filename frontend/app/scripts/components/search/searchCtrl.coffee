@@ -17,8 +17,12 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
 
   $scope.results = 'scripts/components/results/resultsView.html'
   $scope.canSearch = false
+
   # O que temos no carrinho hoje?
   $scope.cartTotal = Total.get()
+
+  $scope.failedFilters = false
+  $scope.failedItems = false
 
   # Variáveis de dados globais (dados persistentes entre páginas)
 
@@ -109,6 +113,10 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     Results.sendFilter(data).success((data) ->
       $rootScope.searchData = data
       $scope.searchData = data
+    ).error((data) ->
+      $scope.failedItems = true
+      $scope.msg = "Falha ao carregar a lista de ofertas."
+      $scope.msgType = "danger"
     )
 
   # Modal para confirmação de mudança de advertiser
@@ -165,13 +173,14 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     weekday = Results.list('/weekday')
     category = Results.list('/category')
     region = Results.list('/region')
-    $q.all([
-      advertiser
-      category
-      weekday
-      determination
-      region
-    ]).then (data) ->
+    promise = $q.all([
+                advertiser
+                category
+                weekday
+                determination
+                region
+              ])
+    promise.then ((data) ->
       $rootScope.listingAllData = data
       $scope.advertisers = data[0].data
       $scope.categories = data[1].data
@@ -180,6 +189,12 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
       $scope.regions = data[4].data
       # You can search now
       $scope.canSearch = true
+      $scope.failedFilters = false
+    ), (data) ->
+      $scope.failedFilters = true
+      $scope.msg = "Falha ao carregar os filtros para a busca de ofertas."
+      $scope.msgType = "danger"
+
   else
     $scope.advertisers = $rootScope.listingAllData[0].data
     $scope.categories = $rootScope.listingAllData[1].data
@@ -187,7 +202,7 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
     $scope.determinations = $rootScope.listingAllData[3].data
     $scope.regions = $rootScope.listingAllData[4].data
     $scope.canSearch = true
-
+    $scope.failedFilters = false
   # Ordenação de resultado
 
   # Modo de Visualização
