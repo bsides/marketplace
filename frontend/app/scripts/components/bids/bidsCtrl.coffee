@@ -253,7 +253,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
           'Cancelar'
     )
     regionModal.result.then ((isConfirmed) ->
-      if isConfirmed
+      # if isConfirmed
         # $log.info 'fechou'
     )
 

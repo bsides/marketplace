@@ -1,10 +1,12 @@
 <div class="start-search">
+  <form action="" name="formFilter">
   <div class="panel panel-default">
     <div class="panel-body form-inline">
       <strong>Anunciante</strong>
-        <select ng-model="modalSelectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control filter-advertiser" ng-class="{ 'disabled': !isAdvertiserSelectable }">
+        <select ng-model="modalSelectedAdvertiser" ng-options="advertiser.description for advertiser in advertisers track by advertiser.id" class="form-control filter-advertiser" ng-class="{ 'disabled': !isAdvertiserSelectable }" required name="modalSelectedAdvertiser">
           <option style="display:none" value="">Selecione um anunciante</option>
         </select>
+        <alert type="danger" close="closeAlert()" ng-show="formFilter.modalSelectedAdvertiser.$invalid && !formFilter.modalSelectedAdvertiser.$pristine" name="modalSelectedAdvertiserError">Você precisa selecionar um anunciante</alert>
 <!--
       <select name="advertisers" ng-model="isAdvertiser" class="form-control">
         <option value="">Selecione um Anunciante</option>
@@ -120,11 +122,12 @@
           <div class="row">
             <div class="col-md-12 t-right">
               <button type="button" class="btn btn-info" ng-click="closeModal()">Cancelar</button>
-              <button type="button" class="btn btn-success" ng-click="ok()">Buscar</button>
+              <button type="button" class="btn btn-success" ng-click="ok()" ng-class="{ 'disabled': formFilter.$invalid }">Buscar</button>
             </div>
           </div>
         </tab>
       </tabset>
     </div>
   </div>
+  </form>
 </div>

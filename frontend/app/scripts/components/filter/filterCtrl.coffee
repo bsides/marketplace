@@ -16,6 +16,7 @@ app.factory 'modalUtils', [
 app.controller 'FilterCtrl', (
   $scope,
   $modalInstance,
+  $log,
   advertisers,
   categories,
   weekdays,
@@ -38,8 +39,11 @@ app.controller 'FilterCtrl', (
   $scope.isAdvertiserSelectable = true if $scope.advertisers.length > 1
 
   $scope.ok = ->
-    makeFilter($scope.modalSelectedAdvertiser)
-    $scope.closeModal()
+    if $scope.formFilter.$valid
+      makeFilter($scope.modalSelectedAdvertiser)
+      $scope.closeModal()
+    else
+      $log.info $scope.formFilter.modalSelectedAdvertiserError
     return
 
   $scope.closeModal = ->

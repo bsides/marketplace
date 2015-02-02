@@ -11,7 +11,19 @@
 
 'use strict'
 
-app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout, $q, $log, Results, Total) ->
+app.controller 'SearchCtrl', (
+  $scope,
+  $rootScope,
+  $modal,
+  $modalStack,
+  $timeout,
+  $q,
+  $log,
+  Results,
+  AdvertiserService,
+  Total
+  ) ->
+
 # TODO: rows with ng-repeat
 # http://angularjs4u.com/filters/angularjs-template-divs-row/
 
@@ -175,18 +187,18 @@ app.controller 'SearchCtrl', ($scope, $rootScope, $modal, $modalStack, $timeout,
   # Considerei que dificilmente o usuário precisará da listagem mais de uma vez por acesso
   if typeof $rootScope.listingAllData is 'undefined'
     determination = Results.list('/determination')
-    advertiser = Results.list('/advertiser')
+    advertiser = AdvertiserService.all()
     weekday = Results.list('/weekday')
     category = Results.list('/category')
     region = Results.list('/region')
     promise = $q.all([
-                advertiser
-                category
-                weekday
-                determination
-                region
-              ])
-    promise.then ((data) ->
+      advertiser
+      category
+      weekday
+      determination
+      region
+    ])
+    .then ((data) ->
       $rootScope.listingAllData = data
       $scope.advertisers = data[0].data
       $scope.categories = data[1].data

@@ -45,3 +45,21 @@ app.factory 'Results', ($http) ->
       url: url.updateCart
       data: array
     )
+
+
+app.factory 'AdvertiserService', ($http) ->
+  url =
+    get: '/direct/advertiser/get'
+    all: '/direct/advertiser/list'
+    set: '/direct/advertiser/set/'
+
+  get: ->
+    $http.get(url.get)
+
+  all: ->
+    $http.get(url.all)
+
+  set: (id) ->
+    $http.get(url.set + id)
+
+
