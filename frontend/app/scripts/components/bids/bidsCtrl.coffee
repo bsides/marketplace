@@ -254,7 +254,7 @@ app.controller 'BidsCtrl', ($scope, $rootScope, $log, $filter, $modal, localStor
     )
     regionModal.result.then ((isConfirmed) ->
       if isConfirmed
-        $log.info 'fechou'
+        # $log.info 'fechou'
     )
 
   # Data coming from server
